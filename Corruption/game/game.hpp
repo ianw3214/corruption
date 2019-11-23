@@ -1,6 +1,8 @@
 #include "oasis.h"
 
-class SandboxLayer : public Oasis::GameStateLayer
+#include "entityLayer/entityLayer.hpp"
+
+class MainGameLayer : public Oasis::GameStateLayer
 {
 public:
     virtual void Init() override;
@@ -8,13 +10,15 @@ public:
 
     virtual bool HandleEvent(const Oasis::Event& event) override;
     virtual void Update()  override;
+private:
 };
 
-class Sandbox : public Oasis::GameState
+class Game : public Oasis::GameState
 {
 public:
     virtual void InitLayers() override
     {
-        AddLayer(new SandboxLayer());
+        AddLayer(new MainGameLayer());
+        AddLayer(new EntityLayer());
     }
 };

@@ -1,0 +1,9 @@
+target_sources(Corruption PRIVATE 
+    entity.hpp
+    entityLayer.hpp)
+
+target_sources(Corruption PRIVATE
+    entity.cpp
+    entityLayer.cpp)
+
+add_subdirectory(components)

@@ -75,6 +75,7 @@ namespace Oasis
 
         Reference<T>& operator=(T* new_data) {
             m_data = new_data;
+            return *this;
         }
 
         T& operator*() {
