@@ -7,10 +7,10 @@ Oasis::Reference<Component> Entity::AddComponent(Component * component)
     return m_components.back();
 }
 
-void Entity::Update()
+void Entity::Update(float delta)
 {
     for (Oasis::Reference<Component> component : m_components)
     {
-        component->Update();
+        component->Update(delta);
     }
 }

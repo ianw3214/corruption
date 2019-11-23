@@ -50,7 +50,7 @@ void RenderComponent::SetSourcePos(float x, float y)
     m_sprite->SetSourcePos(x, y);
 }
 
-void RenderComponent::Update()
+void RenderComponent::Update(float delta)
 {
     m_sprite->SetPos(m_entity->GetX(), m_entity->GetY());
     if (m_type == SpriteType::NORMAL)

@@ -11,7 +11,7 @@ public:
     virtual ~Component() {}
     inline void SetEntity(Entity * entity) { m_entity = entity; }
 
-    virtual void Update() {}
+    virtual void Update(float delta) {}
 protected:
     Oasis::Reference<Entity> m_entity;
 };
@@ -39,7 +39,7 @@ public:
         return Oasis::Reference<COMPONENT>();
     }
 
-    void Update();
+    void Update(float delta);
 private:
     std::vector<Oasis::Owned<Component>> m_components;
 

@@ -63,9 +63,8 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
     return false;
 }
 
-
-
-void PlayerController::Update()
+constexpr float speed = 200.f;
+void PlayerController::Update(float delta)
 {
     OASIS_TRAP(s_player);
     float x = s_player->GetX();
@@ -77,22 +76,22 @@ void PlayerController::Update()
 
     if (m_upPressed) 
     {
-        s_player->SetY(y + 1.f);
+        s_player->SetY(y + speed * delta);
         anim->PlayAnimation("up");
     }
     if (m_downPressed) 
     {
-        s_player->SetY(y - 1.f);
+        s_player->SetY(y - speed * delta);
         anim->PlayAnimation("down");
     }
     if (m_leftPressed) 
     {
-        s_player->SetX(x - 1.f);
+        s_player->SetX(x - speed * delta);
         anim->PlayAnimation("left");
     }
     if (m_rightPressed)
     {
-        s_player->SetX(x + 1.f);
+        s_player->SetX(x + speed * delta);
         anim->PlayAnimation("right");
     }
 }

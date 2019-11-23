@@ -21,7 +21,7 @@ public:
     void SetSourceDimensions(float w, float h);
     void SetSourcePos(float x, float y);
 
-    virtual void Update() override;
+    virtual void Update(float delta) override;
 private:
     SpriteType m_type;
     Oasis::Owned<Oasis::Sprite> m_sprite;

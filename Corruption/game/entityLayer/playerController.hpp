@@ -8,7 +8,7 @@ public:
     static void SetPlayer(Oasis::Reference<Entity> entity);
 
     static bool OnEvent(const Oasis::Event& event);
-    static void Update();
+    static void Update(float delta);
 
     static void DEBUG();
 private:

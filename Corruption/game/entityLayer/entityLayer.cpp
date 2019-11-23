@@ -1,5 +1,7 @@
 #include "entityLayer.hpp"
 
+#include <chrono>
+
 #include "playerController.hpp"
 #include "components/renderComponent.hpp"
 
@@ -33,12 +35,22 @@ bool EntityLayer::HandleEvent(const Oasis::Event& event)
     return PlayerController::OnEvent(event);
 }
 
+static std::chrono::time_point<std::chrono::system_clock> lastTime;
 void EntityLayer::Update() 
 {
-    PlayerController::Update();
+    // Delta time calculation
+    auto delta = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastTime).count()) / 1000.f;
+    lastTime = std::chrono::system_clock::now();
+    if (delta < 0.f || delta > 500.f)
+    {
+        delta = 1000.f / 24.f;
+    }
+
+    // Actual updates
+    PlayerController::Update(delta);
     for (Oasis::Reference<Entity> entity : m_entities)
     {
-        entity->Update();
+        entity->Update(delta);
     }
 }
 
