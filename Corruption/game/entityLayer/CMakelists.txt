@@ -1,9 +1,11 @@
 target_sources(Corruption PRIVATE 
     entity.hpp
-    entityLayer.hpp)
+    entityLayer.hpp
+    playerController.hpp)
 
 target_sources(Corruption PRIVATE
     entity.cpp
-    entityLayer.cpp)
+    entityLayer.cpp
+    playerController.cpp)
 
 add_subdirectory(components)

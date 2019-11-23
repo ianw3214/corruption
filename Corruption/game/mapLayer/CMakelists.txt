@@ -1,0 +1,3 @@
+target_sources(Corruption PRIVATE mapLayer.hpp)
+
+target_sources(Corruption PRIVATE mapLayer.cpp)

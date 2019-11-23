@@ -2,4 +2,5 @@ target_sources(Corruption PRIVATE game.hpp)
 
 target_sources(Corruption PRIVATE game.cpp)
 
+add_subdirectory(mapLayer)
 add_subdirectory(entityLayer)

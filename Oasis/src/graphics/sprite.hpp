@@ -9,7 +9,7 @@ namespace Oasis
     public:
         Sprite();
         Sprite(const std::string& path);
-        ~Sprite();
+        virtual ~Sprite();
 
         void SetPos(float x, float y);
         void SetDimensions(float w, float h);

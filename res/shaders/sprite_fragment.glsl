@@ -11,7 +11,7 @@ uniform sampler2D u_Texture;
 
 void main() {
     float x = vTexCoord.x / u_textureWidth;
-    float y = vTexCoord.y / u_textureHeight;
+    float y = 1.0 - vTexCoord.y / u_textureHeight;
 	vec4 texColour = texture(u_Texture, vec2(x, y));
 	colour = texColour;
 }

@@ -26,6 +26,18 @@ public:
     inline float GetY() const { return m_y; }
 
     Oasis::Reference<Component> AddComponent(Component * component);
+    template<typename COMPONENT>
+    Oasis::Reference<Component> GetComponent()
+    {
+        for (Oasis::Reference<Component> component : m_components)
+        {
+            if (Oasis::Reference<COMPONENT> res = DynamicCast<COMPONENT>(component))
+            {
+                return res;
+            }
+        }
+        return Oasis::Reference<Component>();
+    }
 
     void Update();
 private:
