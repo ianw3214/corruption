@@ -25,6 +25,7 @@ namespace Oasis
         AnimatedSprite(const std::string& path, float frame_w, float frame_h);
         ~AnimatedSprite();
 
+        void SetAnimFrameSize(float w, float h);
         void SetFPS(int fps);
 
         void AddAnimation(const std::string& name, unsigned int start, unsigned int end);

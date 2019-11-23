@@ -9,6 +9,12 @@ void EntityLayer::Init()
     renderComp->SetSourceDimensions(32, 32);
     renderComp->SetSourcePos(0, 0);
 
+    auto anim = renderComp->GetAnimatedSprite();
+    anim->AddAnimation("up", 0, 0);
+    anim->AddAnimation("down", 4, 4);
+    anim->AddAnimation("left", 8, 8);
+    anim->AddAnimation("right", 12, 12);
+
     Oasis::Reference<Entity> entity = AddPlayer(new Entity());
     entity->AddComponent(renderComp);
 

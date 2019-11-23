@@ -9,6 +9,8 @@ public:
 
     static bool OnEvent(const Oasis::Event& event);
     static void Update();
+
+    static void DEBUG();
 private:
     static Oasis::Reference<Entity> s_player;
 

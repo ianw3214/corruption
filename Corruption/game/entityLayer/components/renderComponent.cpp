@@ -20,6 +20,17 @@ RenderComponent::RenderComponent(const std::string& path, SpriteType type)
     }
 }
 
+Oasis::Reference<Oasis::Sprite> RenderComponent::GetSprite()
+{
+    return m_sprite;
+}
+
+Oasis::Reference<Oasis::AnimatedSprite> RenderComponent::GetAnimatedSprite()
+{
+    OASIS_TRAP(m_type == SpriteType::ANIMATED);
+    return DynamicCast<Oasis::AnimatedSprite>(m_sprite);
+}
+
 void RenderComponent::SetDimensions(float width, float height)
 {
     m_sprite->SetDimensions(width, height);
@@ -28,6 +39,10 @@ void RenderComponent::SetDimensions(float width, float height)
 void RenderComponent::SetSourceDimensions(float w, float h)
 {
     m_sprite->SetSourceDimensions(w, h);
+    if (m_type == SpriteType::ANIMATED)
+    {
+        GetAnimatedSprite()->SetAnimFrameSize(w, h);
+    }
 }
 
 void RenderComponent::SetSourcePos(float x, float y)

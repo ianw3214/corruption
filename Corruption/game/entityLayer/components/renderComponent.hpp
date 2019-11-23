@@ -14,6 +14,8 @@ class RenderComponent : public Component
 public:
     RenderComponent(const std::string& path, SpriteType type = SpriteType::NORMAL);
     SpriteType GetType() const { return m_type; }
+    Oasis::Reference<Oasis::Sprite> GetSprite();
+    Oasis::Reference<Oasis::AnimatedSprite> GetAnimatedSprite();
 
     void SetDimensions(float width, float height);
     void SetSourceDimensions(float w, float h);

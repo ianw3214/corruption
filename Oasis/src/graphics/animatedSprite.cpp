@@ -25,15 +25,21 @@ AnimatedSprite::AnimatedSprite(const std::string& path, float frame_w, float fra
     SetSourceDimensions(frame_w, frame_h);
 
     // Calculate number of sprites in sprite sheet based on texture size and input frame
-    Reference<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(path);
-    OASIS_TRAP(texture);
-    m_numFramesH = texture->getWidth() / static_cast<int>(frame_w);
-    m_numFramesV = texture->getHeight() / static_cast<int>(frame_h);
+    SetAnimFrameSize(frame_w, frame_h);
 }
 
 AnimatedSprite::~AnimatedSprite()
 {
 
+}
+
+void AnimatedSprite::SetAnimFrameSize(float w, float h)
+{
+    // Calculate number of sprites in sprite sheet based on texture size and input frame
+    Reference<Oasis::Texture> texture = Oasis::ResourceManager::LoadResource<Oasis::Texture>(GetTexturePath());
+    OASIS_TRAP(texture);
+    m_numFramesH = texture->getWidth() / static_cast<int>(w);
+    m_numFramesV = texture->getHeight() / static_cast<int>(h);
 }
 
 void AnimatedSprite::SetFPS(int fps)

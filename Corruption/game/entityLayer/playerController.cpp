@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include "entity.hpp"
+#include "components/renderComponent.hpp"
 
 Oasis::Reference<Entity> PlayerController::s_player;
 bool PlayerController::m_upPressed = false;
@@ -14,6 +15,7 @@ bool PlayerController::m_rightPressed = false;
 void PlayerController::SetPlayer(Oasis::Reference<Entity> entity)
 {
     s_player = entity;
+    Oasis::ImGuiWrapper::AddWindowFunction(&DEBUG);
 }
 
 bool PlayerController::OnEvent(const Oasis::Event& event)
@@ -61,14 +63,41 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
     return false;
 }
 
+
+
 void PlayerController::Update()
 {
     OASIS_TRAP(s_player);
     float x = s_player->GetX();
     float y = s_player->GetY();
 
-    if (m_upPressed) s_player->SetY(y + 1.f);
-    if (m_downPressed) s_player->SetY(y - 1.f);
-    if (m_leftPressed) s_player->SetX(x - 1.f);
-    if (m_rightPressed) s_player->SetX(x + 1.f);
+    Oasis::Reference<RenderComponent> renderComp = s_player->GetComponent<RenderComponent>();
+    OASIS_TRAP(renderComp);
+    auto anim = renderComp->GetAnimatedSprite();
+
+    if (m_upPressed) 
+    {
+        s_player->SetY(y + 1.f);
+        anim->PlayAnimation("up");
+    }
+    if (m_downPressed) 
+    {
+        s_player->SetY(y - 1.f);
+        anim->PlayAnimation("down");
+    }
+    if (m_leftPressed) 
+    {
+        s_player->SetX(x - 1.f);
+        anim->PlayAnimation("left");
+    }
+    if (m_rightPressed)
+    {
+        s_player->SetX(x + 1.f);
+        anim->PlayAnimation("right");
+    }
+}
+
+void PlayerController::DEBUG()
+{
+
 }

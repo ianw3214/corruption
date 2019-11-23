@@ -171,22 +171,22 @@ void Renderer::DrawAnimatedSprite(Reference<AnimatedSprite> sprite)
 		sprite->GetX(),
 		sprite->GetY(),
 		sprite->GetSourceX(),
-		sprite->GetSourceY(),
+		sprite->GetSourceY() + sprite->GetSourceHeight(),
 		// coordinate 2
 		sprite->GetX(),
 		sprite->GetY() + sprite->GetHeight(),
 		sprite->GetSourceX(),
-		sprite->GetSourceY() + sprite->GetSourceHeight(),
+		sprite->GetSourceY(),
 		// coordinate 3
 		sprite->GetX() + sprite->GetWidth(),
 		sprite->GetY(),
 		sprite->GetSourceX() + sprite->GetSourceWidth(),
-		sprite->GetSourceY(),
+		sprite->GetSourceY() + sprite->GetSourceHeight(),
 		// coordinate 4
 		sprite->GetX() + sprite->GetWidth(),
 		sprite->GetY() + sprite->GetHeight(),
 		sprite->GetSourceX() + sprite->GetSourceWidth(),
-		sprite->GetSourceY() + sprite->GetSourceHeight()
+		sprite->GetSourceY()
 		
 	};
 	VertexArray		va;

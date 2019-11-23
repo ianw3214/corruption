@@ -23,6 +23,8 @@
 #include "events/mouseEvent.hpp"
 #include "events/textEvent.hpp"
 
+#include "imgui/imguiWrapper.hpp"
+
 #include "audio/audio.hpp"
 #include "audio/source.hpp"
 
