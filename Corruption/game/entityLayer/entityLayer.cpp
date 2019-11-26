@@ -3,6 +3,8 @@
 #include <chrono>
 
 #include "playerController.hpp"
+#include "camera.hpp"
+
 #include "components/renderComponent.hpp"
 
 void EntityLayer::Init() 
@@ -48,6 +50,7 @@ void EntityLayer::Update()
 
     // Actual updates
     PlayerController::Update(delta);
+    Camera::Update(delta);
     for (Oasis::Reference<Entity> entity : m_entities)
     {
         entity->Update(delta);
@@ -58,6 +61,7 @@ Oasis::Reference<Entity> EntityLayer::AddPlayer(Entity * entity)
 {
     m_player = AddEntity(entity);
     PlayerController::SetPlayer(m_player);
+    Camera::SetPlayer(m_player);
     return m_player;
 }
 

@@ -1,5 +1,7 @@
 #include "mapLayer.hpp"
 
+#include "game/entityLayer/camera.hpp"
+
 void MapLayer::Init() 
 {
     m_sprite = Oasis::Sprite("res/tiles/basic.png");
@@ -29,7 +31,7 @@ void MapLayer::Update()
     {
         for (int x = 0; x < kMapWidth; ++x)
         {
-            m_sprite.SetPos(x * kTileSize, y * kTileSize);
+            m_sprite.SetPos(x * kTileSize - Camera::GetX(), y * kTileSize - Camera::GetY());
             Oasis::Renderer::DrawSprite(m_sprite);
         }
     }

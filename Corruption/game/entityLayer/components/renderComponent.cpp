@@ -1,6 +1,8 @@
 #include "renderComponent.hpp"
 using namespace Oasis;
 
+#include "game/entityLayer/camera.hpp"
+
 RenderComponent::RenderComponent(const std::string& path, SpriteType type)
     : m_type(type)
 {
@@ -52,7 +54,7 @@ void RenderComponent::SetSourcePos(float x, float y)
 
 void RenderComponent::Update(float delta)
 {
-    m_sprite->SetPos(m_entity->GetX(), m_entity->GetY());
+    m_sprite->SetPos(m_entity->GetX() - Camera::GetX(), m_entity->GetY() - Camera::GetY());
     if (m_type == SpriteType::NORMAL)
     {
         Renderer::DrawSprite(m_sprite);

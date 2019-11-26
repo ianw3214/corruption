@@ -9,6 +9,7 @@ enum class SpriteType
 };
 
 // Render component acts as a wrapper around the sprite class
+// NOTE: Assumes all entities are affected by camera - if NOT the case need to adjust in future
 class RenderComponent : public Component
 {
 public:

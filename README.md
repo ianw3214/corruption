@@ -4,8 +4,8 @@
 
 ***
 
-## Ideas
+## TODOs
 
-- Entity Component Architecture for game entities
+- [ ] Optimize tilemap rendering (it is super slow right now)
 
 ***
