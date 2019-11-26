@@ -10,3 +10,6 @@ build/
 
 # TEMP FILES
 imgui.ini
+
+# REFERENCE IMAGES
+reference/
