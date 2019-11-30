@@ -2,6 +2,7 @@
 #include "core/entry.hpp"
 
 #include "game/game.hpp"
+#include "util/timer.hpp"
 
 Oasis::Configuration Oasis::GetConfiguration()
 {

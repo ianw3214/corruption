@@ -14,13 +14,14 @@ using namespace Oasis;
 #include "events/textEvent.hpp"
 
 std::vector<std::function<void()>> ImGuiWrapper::s_windowFunctions;
+ImGuiContext * ImGuiWrapper::s_context;
 
 // Data
 static SDL_Cursor * g_mouseCursors[ImGuiMouseCursor_COUNT] = {};
 
 void ImGuiWrapper::Init()
 {
-    ImGui::CreateContext();
+    s_context = ImGui::CreateContext();
     ImGui::StyleColorsDark();
 
     ImGuiIO& io = ImGui::GetIO();
@@ -157,4 +158,9 @@ void ImGuiWrapper::Update(float deltaTime)
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+ImGuiContext * ImGuiWrapper::GetContext()
+{
+    return s_context;
 }

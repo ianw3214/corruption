@@ -6,6 +6,8 @@
 
 #include "game/entityLayer/camera.hpp"
 
+#include "util/timer.hpp"
+
 MapSector::MapSector(int x, int y)
     : m_x(x)
     , m_y(y)
@@ -86,6 +88,9 @@ bool MapLayer::HandleEvent(const Oasis::Event& event)
 
 void MapLayer::Update() 
 {
+    // TEMPORARY CODE
+    Profiler::Update();
+    Timer("MapLayer::Update");
     for (int y = 0; y < kMapHeight; ++y)
     {
         for (int x = 0; x < kMapWidth; ++x)

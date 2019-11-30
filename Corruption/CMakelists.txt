@@ -1,3 +1,4 @@
 target_sources(Corruption PRIVATE config.cpp)
 
 add_subdirectory(game)
+add_subdirectory(util)

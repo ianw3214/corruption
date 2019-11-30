@@ -3,6 +3,7 @@
 #include <vector>
 #include <functional>
 
+struct ImGuiContext;
 namespace Oasis
 {
     class Event;
@@ -16,7 +17,10 @@ namespace Oasis
 
         static void OnEvent(const Event& event);
         static void Update(float deltaTime);
+
+        static ImGuiContext * GetContext();
     private:
         static std::vector<std::function<void()>> s_windowFunctions;
+        static ImGuiContext * s_context;
     };
 }

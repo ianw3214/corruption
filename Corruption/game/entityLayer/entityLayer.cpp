@@ -7,6 +7,8 @@
 
 #include "components/renderComponent.hpp"
 
+#include "util/timer.hpp"
+
 void EntityLayer::Init() 
 {
     RenderComponent * renderComp = new RenderComponent("res/player.png", SpriteType::ANIMATED);
@@ -24,6 +26,9 @@ void EntityLayer::Init()
 
     entity->SetX(50.f);
     entity->SetY(50.f);
+
+    // TEMPORARY CODE
+    Profiler::Init();
 }
 
 void EntityLayer::Close() 
@@ -40,6 +45,8 @@ bool EntityLayer::HandleEvent(const Oasis::Event& event)
 static std::chrono::time_point<std::chrono::system_clock> lastTime;
 void EntityLayer::Update() 
 {
+    Timer("EntityLayer::Update");
+
     // Delta time calculation
     auto delta = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastTime).count()) / 1000.f;
     lastTime = std::chrono::system_clock::now();
