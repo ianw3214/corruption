@@ -8,6 +8,8 @@
 
 #include "util/timer.hpp"
 
+static Shader * mapShader = nullptr;
+
 MapSector::MapSector(int x, int y)
     : m_x(x)
     , m_y(y)
@@ -24,6 +26,7 @@ MapSector::MapSector(int x, int y)
         std::memset(m_tiles, 0, sizeof(m_tiles));
         SaveToFile();
     }
+    CreateBufferData();
 }
 
 void MapSector::Render(Oasis::Reference<Oasis::Sprite> sprite)
@@ -31,9 +34,12 @@ void MapSector::Render(Oasis::Reference<Oasis::Sprite> sprite)
     int pixel_x = m_x * kSectorPixelWidth - static_cast<int>(Camera::GetX());
     int pixel_y = m_y * kSectorPixelHeight - static_cast<int>(Camera::GetY());
 
+    /*
     if (pixel_x + kSectorPixelWidth < 0 || pixel_y + kSectorPixelHeight < 0) return;
     if (pixel_x > Oasis::WindowService::WindowWidth() || pixel_y > Oasis::WindowService::WindowHeight()) return;
+    */
 
+    /*
     for (int y = 0; y < kSectorHeight; ++y)
     {
         for (int x = 0; x < kSectorWidth; ++x)
@@ -42,6 +48,21 @@ void MapSector::Render(Oasis::Reference<Oasis::Sprite> sprite)
             Oasis::Renderer::DrawSprite(sprite);
         }
     }
+    */
+    Oasis::Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
+
+    texture->bind();
+    mapShader->bind();
+    mapShader->setUniform1f("u_screenWidth", static_cast<float>(Oasis::WindowService::WindowWidth()));
+    mapShader->setUniform1f("u_screenHeight", static_cast<float>(Oasis::WindowService::WindowHeight()));
+    mapShader->setUniform1f("u_textureWidth", static_cast<float>(texture->getWidth()));
+	mapShader->setUniform1f("u_textureHeight", static_cast<float>(texture->getHeight()));
+    mapShader->setUniform1f("u_cameraX", static_cast<float>(Camera::GetX()));
+	mapShader->setUniform1f("u_cameraY", static_cast<float>(Camera::GetY()));
+    m_va->bind();
+    m_ib->bind();
+
+    glDrawElements(GL_TRIANGLES, m_ib->getCount(), GL_UNSIGNED_INT, nullptr);    
 }
 
 void MapSector::SaveToFile()
@@ -58,6 +79,57 @@ void MapSector::SaveToFile()
     }
 }
 
+void MapSector::CreateBufferData()
+{
+    constexpr int num_vertices = kSectorWidth * kSectorHeight * 4;
+    // Initialize raw buffer data
+    float positions[num_vertices * 4];
+    unsigned int indices[kSectorWidth * kSectorHeight * 6];
+    // Populate buffer data
+    int cur_index = 0;
+    int cur_tile = 0;
+    int cur_index_index = 0;
+    for (int y = 0; y < kSectorHeight; ++y)
+    {
+        for (int x = 0; x < kSectorWidth; ++x)
+        {
+            OASIS_TRAP(cur_index < num_vertices * 4);
+            positions[cur_index++] = m_x * kSectorPixelWidth + x * kTileSize;
+            positions[cur_index++] = m_y * kSectorPixelHeight + y * kTileSize;
+            positions[cur_index++] = 0.0;
+            positions[cur_index++] = 32.0;
+            positions[cur_index++] = m_x * kSectorPixelWidth + x * kTileSize;
+            positions[cur_index++] = m_y * kSectorPixelHeight + (y + 1) * kTileSize;
+            positions[cur_index++] = 0.0;
+            positions[cur_index++] = 0.0;
+            positions[cur_index++] = m_x * kSectorPixelWidth + (x + 1) * kTileSize;
+            positions[cur_index++] = m_y * kSectorPixelHeight + (y + 1) * kTileSize;
+            positions[cur_index++] = 32.0;
+            positions[cur_index++] = 0.0;
+            positions[cur_index++] = m_x * kSectorPixelWidth + (x + 1) * kTileSize;
+            positions[cur_index++] = m_y * kSectorPixelHeight + y * kTileSize;
+            positions[cur_index++] = 32.0;
+            positions[cur_index++] = 32.0;
+            OASIS_TRAP(cur_index_index < kSectorWidth * kSectorHeight * 6);
+            indices[cur_index_index++] = cur_tile;
+            indices[cur_index_index++] = cur_tile + 1;
+            indices[cur_index_index++] = cur_tile + 2;
+            indices[cur_index_index++] = cur_tile;
+            indices[cur_index_index++] = cur_tile + 2;
+            indices[cur_index_index++] = cur_tile + 3;
+            cur_tile += 4;
+        }
+    }
+    m_va = new VertexArray();   
+    m_vb = new VertexBuffer(positions, sizeof(float) * num_vertices * 4);
+    m_ib = new IndexBuffer(indices, kSectorWidth * kSectorHeight * 6);
+    // specify the layout of the buffer data
+    VertexBufferLayout layout;
+    layout.pushFloat(2);
+    layout.pushFloat(2);
+    m_va->addBuffer(*m_vb, layout);
+}
+
 void MapLayer::Init() 
 {
     m_sprite = Oasis::Sprite("res/tiles/basic.png");
@@ -72,6 +144,12 @@ void MapLayer::Init()
         {
             m_sectors.emplace_back(x, y);
         }
+    }
+    if (!mapShader)
+    {
+        mapShader = new Shader("res/shaders/camera_vertex.glsl", "res/shaders/sprite_fragment.glsl");
+        mapShader->setUniform1f("u_screenWidth", static_cast<float>(Oasis::WindowService::WindowWidth()));
+        mapShader->setUniform1f("u_screenHeight", static_cast<float>(Oasis::WindowService::WindowHeight()));
     }
 }
 

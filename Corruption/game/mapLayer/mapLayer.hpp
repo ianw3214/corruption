@@ -32,6 +32,12 @@ private:
 
     int m_tiles[kSectorWidth * kSectorHeight];
     void SaveToFile();
+
+    // Store buffers to avoid having to draw it every time
+    VertexArray * m_va;
+    VertexBuffer * m_vb;
+    IndexBuffer * m_ib;
+    void CreateBufferData();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////
