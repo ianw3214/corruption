@@ -1,6 +1,7 @@
 #include "entityLayer.hpp"
 
 #include <chrono>
+#include <algorithm>
 
 #include "playerController.hpp"
 #include "camera.hpp"
@@ -11,27 +12,39 @@
 
 void EntityLayer::Init() 
 {
-    RenderComponent * renderComp = new RenderComponent("res/player.png", SpriteType::ANIMATED);
-    renderComp->SetDimensions(120, 120);
-    renderComp->SetSourceDimensions(32, 32);
-    renderComp->SetSourcePos(0, 0);
+    {   // TEMPORARY PLAYER CODE
+        RenderComponent * renderComp = new RenderComponent("res/player.png", SpriteType::ANIMATED);
+        renderComp->SetDimensions(120, 120);
+        renderComp->SetSourceDimensions(32, 32);
+        renderComp->SetSourcePos(0, 0);
 
-    auto anim = renderComp->GetAnimatedSprite();
-    anim->AddAnimation("up", 0, 0);
-    anim->AddAnimation("down", 4, 4);
-    anim->AddAnimation("left", 8, 8);
-    anim->AddAnimation("right", 12, 12);
-    anim->AddAnimation("run_up", 16, 17);
-    anim->AddAnimation("run_down", 20, 21);
-    anim->AddAnimation("run_left", 24, 25);
-    anim->AddAnimation("run_right", 28, 29);
+        auto anim = renderComp->GetAnimatedSprite();
+        anim->AddAnimation("up", 0, 0);
+        anim->AddAnimation("down", 4, 4);
+        anim->AddAnimation("left", 8, 8);
+        anim->AddAnimation("right", 12, 12);
+        anim->AddAnimation("run_up", 16, 17);
+        anim->AddAnimation("run_down", 20, 21);
+        anim->AddAnimation("run_left", 24, 25);
+        anim->AddAnimation("run_right", 28, 29);
 
-    Oasis::Reference<Entity> entity = AddPlayer(new Entity());
-    entity->AddComponent(renderComp);
+        Oasis::Reference<Entity> entity = AddPlayer(new Entity());
+        entity->AddComponent(renderComp);
 
-    entity->SetX(50.f);
-    entity->SetY(50.f);
+        entity->SetX(50.f);
+        entity->SetY(50.f);
+    }
 
+    {   // TEMPORARY ENTITY TESTING CODE
+        RenderComponent * renderComp = new RenderComponent("res/house.png");
+        Oasis::Reference<Entity> entity = AddEntity(new Entity());
+        entity->AddComponent(renderComp);
+
+        entity->SetX(300.f);
+        entity->SetY(300.f);
+    }
+
+    // TODO: Remove this
     // TEMPORARY CODE
     Profiler::Init();
 }
@@ -51,6 +64,14 @@ static std::chrono::time_point<std::chrono::system_clock> lastTime;
 void EntityLayer::Update() 
 {
     Timer("EntityLayer::Update");
+
+    // Sort the entities based on their y position
+    // This could blow up, might need to rethink the solution as number of entities goes up
+    std::sort(m_entities.begin(), m_entities.end(), 
+    [](Oasis::Reference<Entity> a, Oasis::Reference<Entity> b) -> bool
+    { 
+        return a->GetY() > b->GetY(); 
+    });
 
     // Delta time calculation
     auto delta = static_cast<float>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastTime).count()) / 1000.f;

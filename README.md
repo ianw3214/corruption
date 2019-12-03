@@ -12,9 +12,14 @@
 - [ ] Clean up profiling tools code
 - [ ] Visual profiling tools
 - [ ] Test other entities in the map
+- [x] Sprite render order
 - [ ] Serialization of entities
 - [x] Full player movement animation
 - [ ] Map tile editing
+- [ ] NPCs
+- [ ] Dialogue system
+- [ ] Collision system
+- [ ] Sprite render at offset from position
 
 ***
 
@@ -24,3 +29,9 @@
 - [ ] Player sprites
 - [ ] World concept
 - [ ] Basic tilemap
+
+***
+
+## OTHER IMPORTANT SHIT
+
+- [ ] Main story design
