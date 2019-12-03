@@ -31,7 +31,7 @@ namespace Oasis
         void AddAnimation(const std::string& name, unsigned int start, unsigned int end);
         void UpdateFrame();
 
-        void PlayAnimation(const std::string& name, unsigned int loops = 1);
+        void PlayAnimation(const std::string& name, unsigned int loops = 1, bool reset = false);
         void QueueAnimation(const std::string& name, unsigned int loops = 1);
     private:
         // Animated Sprite information

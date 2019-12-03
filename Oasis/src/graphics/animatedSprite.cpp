@@ -82,7 +82,7 @@ void AnimatedSprite::UpdateFrame()
 }
 
 
-void AnimatedSprite::PlayAnimation(const std::string& name, unsigned int loops)
+void AnimatedSprite::PlayAnimation(const std::string& name, unsigned int loops, bool reset)
 {
     OASIS_TRAP(m_frames.find(name) != m_frames.end());
 
@@ -90,11 +90,14 @@ void AnimatedSprite::PlayAnimation(const std::string& name, unsigned int loops)
     QueueAnimation(name, loops);
 
     // Actually play the animation by setting it to the right frame
-    m_currAnimation = name;
-    m_frameIndex = m_frames[m_currAnimation].first;
-    UpdateSourcePosFromFrame();
+    if (m_currAnimation != name || reset)
+    {
+        m_currAnimation = name;
+        m_frameIndex = m_frames[m_currAnimation].first;
+        UpdateSourcePosFromFrame();
 
-    m_lastUpdate = std::chrono::system_clock::now();
+		m_lastUpdate = std::chrono::system_clock::now();
+    }
 }
 
 void AnimatedSprite::QueueAnimation(const std::string& name, unsigned int loops)

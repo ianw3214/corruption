@@ -7,10 +7,11 @@
 #include "components/renderComponent.hpp"
 
 Oasis::Reference<Entity> PlayerController::s_player;
-bool PlayerController::m_upPressed = false;
-bool PlayerController::m_downPressed = false;
-bool PlayerController::m_leftPressed = false;
-bool PlayerController::m_rightPressed = false;
+bool PlayerController::s_upHeld = false;
+bool PlayerController::s_downHeld = false;
+bool PlayerController::s_leftHeld = false;
+bool PlayerController::s_rightHeld = false;
+PlayerController::Direction PlayerController::s_direction;
 
 void PlayerController::SetPlayer(Oasis::Reference<Entity> entity)
 {
@@ -25,19 +26,23 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
         const Oasis::KeyPressedEvent& keyEvent = dynamic_cast<const Oasis::KeyPressedEvent&>(event);
         if (keyEvent.GetKey() == SDL_SCANCODE_W)
         {
-            m_upPressed = true;
+            s_upHeld = true;
+            s_direction = Direction::UP;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_S)
         {
-            m_downPressed = true;
+            s_downHeld = true;
+            s_direction = Direction::DOWN;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_A)
         {
-            m_leftPressed = true;
+            s_leftHeld = true;
+            s_direction = Direction::LEFT;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_D)
         {
-            m_rightPressed = true;
+            s_rightHeld = true;
+            s_direction = Direction::RIGHT;
         }
     }
     if (event.GetType() == Oasis::EventType::KEY_RELEASED)
@@ -45,19 +50,19 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
         const Oasis::KeyReleasedEvent& keyEvent = dynamic_cast<const Oasis::KeyReleasedEvent&>(event);
         if (keyEvent.GetKey() == SDL_SCANCODE_W)
         {
-            m_upPressed = false;
+            s_upHeld = false;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_S)
         {
-            m_downPressed = false;
+            s_downHeld = false;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_A)
         {
-            m_leftPressed = false;
+            s_leftHeld = false;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_D)
         {
-            m_rightPressed = false;
+            s_rightHeld = false;
         }
     }
     return false;
@@ -74,25 +79,51 @@ void PlayerController::Update(float delta)
     OASIS_TRAP(renderComp);
     auto anim = renderComp->GetAnimatedSprite();
 
-    if (m_upPressed) 
+    if (s_upHeld) 
     {
         s_player->SetY(y + speed * delta);
-        anim->PlayAnimation("up");
     }
-    if (m_downPressed) 
+    if (s_downHeld) 
     {
         s_player->SetY(y - speed * delta);
-        anim->PlayAnimation("down");
     }
-    if (m_leftPressed) 
+    if (s_leftHeld) 
     {
         s_player->SetX(x - speed * delta);
-        anim->PlayAnimation("left");
     }
-    if (m_rightPressed)
+    if (s_rightHeld)
     {
         s_player->SetX(x + speed * delta);
-        anim->PlayAnimation("right");
+    }
+
+    // TODO: TEMPORARY CODE, COME UP WITH BETTER FIX
+    bool recalculate = false;
+    if (s_direction == Direction::UP && ! s_upHeld) recalculate = true;
+    if (s_direction == Direction::DOWN && ! s_downHeld) recalculate = true;
+    if (s_direction == Direction::LEFT && ! s_leftHeld) recalculate = true;
+    if (s_direction == Direction::RIGHT && ! s_rightHeld) recalculate = true;
+    if (recalculate)
+    {
+        if (s_upHeld) s_direction = Direction::UP;
+        if (s_downHeld) s_direction = Direction::DOWN;
+        if (s_leftHeld) s_direction = Direction::LEFT;
+        if (s_rightHeld) s_direction = Direction::RIGHT;
+    }
+
+    // TODO: Use a player state system for this
+    if (s_upHeld || s_downHeld || s_leftHeld || s_rightHeld)
+    {
+        if (s_direction == Direction::UP) anim->PlayAnimation("run_up");
+        if (s_direction == Direction::DOWN) anim->PlayAnimation("run_down");
+        if (s_direction == Direction::LEFT) anim->PlayAnimation("run_left");
+        if (s_direction == Direction::RIGHT) anim->PlayAnimation("run_right");
+    }
+    else
+    {
+        if (s_direction == Direction::UP) anim->PlayAnimation("up");
+        if (s_direction == Direction::DOWN) anim->PlayAnimation("down");
+        if (s_direction == Direction::LEFT) anim->PlayAnimation("left");
+        if (s_direction == Direction::RIGHT) anim->PlayAnimation("right");
     }
 }
 
