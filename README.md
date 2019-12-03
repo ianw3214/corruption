@@ -24,6 +24,7 @@
 - [ ] Collision debug draw
 - [ ] Sprite render at offset from position
 - [ ] Camera System Based on where player is looking
+- [ ] More robust animation system
 
 ***
 
