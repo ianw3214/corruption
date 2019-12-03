@@ -3,24 +3,30 @@
 #include <imgui.h>
 
 std::vector<Profiler::Profile> Profiler::s_profiles;
+bool Profiler::s_initialized;
 
 void Profiler::Init()
 {
-    // TODO: REPLACE THIS WITH PROPER INITIALIZATION CODE
-    static bool init = false;
-    if (init) return;
-    init = true;
-
     Oasis::ImGuiWrapper::AddWindowFunction(&Profiler::ImGuiFunc);
 }
 
 void Profiler::AddProfile(const char* name, float time)
 {
+    if (!s_initialized) 
+    {
+        Init();
+        s_initialized = true;
+    }
     s_profiles.emplace_back(name, time);
 }
 
 void Profiler::Update()
 {
+    if (!s_initialized) 
+    {
+        Init();
+        s_initialized = true;
+    }
     s_profiles.clear();
 }
 

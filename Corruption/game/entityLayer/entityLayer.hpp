@@ -17,6 +17,9 @@ public:
     // AddPlayer also calls AddEntity, don't need to call twice
     Oasis::Reference<Entity> AddPlayer(Entity * entity);    
     Oasis::Reference<Entity> AddEntity(Entity * entity);
+
+    // I think this is bad code, try to return references somehow
+    std::vector<Oasis::Owned<Entity>>& GetEntities();
 private:
     std::vector<Oasis::Owned<Entity>> m_entities;
 

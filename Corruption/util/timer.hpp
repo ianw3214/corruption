@@ -21,6 +21,9 @@ private:
     static std::vector<Profile> s_profiles;
 
     static void ImGuiFunc();
+
+    // Handle own initialization when called
+    static bool s_initialized;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

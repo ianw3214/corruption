@@ -4,9 +4,13 @@
 #include <SDL2/SDL.h>
 
 #include "entity.hpp"
+#include "entityLayer.hpp"
+
 #include "components/renderComponent.hpp"
+#include "components/collisionComponent.hpp"
 
 Oasis::Reference<Entity> PlayerController::s_player;
+Oasis::Reference<EntityLayer> PlayerController::s_game;
 bool PlayerController::s_upHeld = false;
 bool PlayerController::s_downHeld = false;
 bool PlayerController::s_leftHeld = false;
@@ -17,6 +21,11 @@ void PlayerController::SetPlayer(Oasis::Reference<Entity> entity)
 {
     s_player = entity;
     Oasis::ImGuiWrapper::AddWindowFunction(&DEBUG);
+}
+
+void PlayerController::SetGame(Oasis::Reference<EntityLayer> layer)
+{
+    s_game = layer;
 }
 
 bool PlayerController::OnEvent(const Oasis::Event& event)
@@ -82,18 +91,34 @@ void PlayerController::Update(float delta)
     if (s_upHeld) 
     {
         s_player->SetY(y + speed * delta);
+        while(PlayerColliding())
+        {
+            s_player->SetY(s_player->GetY() - 1);
+        }
     }
     if (s_downHeld) 
     {
         s_player->SetY(y - speed * delta);
+        while(PlayerColliding())
+        {
+            s_player->SetY(s_player->GetY() + 1);
+        }
     }
     if (s_leftHeld) 
     {
         s_player->SetX(x - speed * delta);
+        while(PlayerColliding())
+        {
+            s_player->SetX(s_player->GetX() + 1);
+        }
     }
     if (s_rightHeld)
     {
         s_player->SetX(x + speed * delta);
+        while(PlayerColliding())
+        {
+            s_player->SetX(s_player->GetX() - 1);
+        }
     }
 
     // TODO: TEMPORARY CODE, COME UP WITH BETTER FIX
@@ -130,4 +155,35 @@ void PlayerController::Update(float delta)
 void PlayerController::DEBUG()
 {
 
+}
+
+bool PlayerController::PlayerColliding()
+{
+    float pX = s_player->GetX();
+    float pY = s_player->GetY();
+    int pWidth = s_player->GetComponent<CollisionComponent>()->GetWidth();
+    int pHeight = s_player->GetComponent<CollisionComponent>()->GetHeight();
+
+    for (Oasis::Reference<Entity> ent : s_game->GetEntities())
+    {
+        if (ent == s_player)
+        {
+            continue;
+        }
+        if (Oasis::Reference<CollisionComponent> col = ent->GetComponent<CollisionComponent>())
+        {
+            float x = ent->GetX();
+            float y = ent->GetY();
+            int width = col->GetWidth();
+            int height = col->GetHeight();
+            if (pX < x + width && pX + pWidth > x)
+            {
+                if (pY < y + height && pY + pHeight > y)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }

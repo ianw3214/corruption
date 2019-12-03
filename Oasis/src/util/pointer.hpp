@@ -91,6 +91,11 @@ namespace Oasis
         operator bool() const {
             return m_data != nullptr;
         }    
+
+        bool operator==(const Reference<T>& other)
+        {
+            return m_data == other.m_data;
+        }
     private:
         T * m_data;
     };

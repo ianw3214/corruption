@@ -7,16 +7,20 @@
 #include "camera.hpp"
 
 #include "components/renderComponent.hpp"
+#include "components/collisionComponent.hpp"
 
 #include "util/timer.hpp"
 
 void EntityLayer::Init() 
 {
+    PlayerController::SetGame(this);
     {   // TEMPORARY PLAYER CODE
         RenderComponent * renderComp = new RenderComponent("res/player.png", SpriteType::ANIMATED);
         renderComp->SetDimensions(120, 120);
         renderComp->SetSourceDimensions(32, 32);
         renderComp->SetSourcePos(0, 0);
+
+        CollisionComponent * collisionComp = new CollisionComponent(120, 120);
 
         auto anim = renderComp->GetAnimatedSprite();
         anim->AddAnimation("up", 0, 0);
@@ -30,6 +34,7 @@ void EntityLayer::Init()
 
         Oasis::Reference<Entity> entity = AddPlayer(new Entity());
         entity->AddComponent(renderComp);
+        entity->AddComponent(collisionComp);
 
         entity->SetX(50.f);
         entity->SetY(50.f);
@@ -37,16 +42,14 @@ void EntityLayer::Init()
 
     {   // TEMPORARY ENTITY TESTING CODE
         RenderComponent * renderComp = new RenderComponent("res/house.png");
+        CollisionComponent * collisionComp = new CollisionComponent(300, 200);
         Oasis::Reference<Entity> entity = AddEntity(new Entity());
         entity->AddComponent(renderComp);
+        entity->AddComponent(collisionComp);
 
         entity->SetX(300.f);
         entity->SetY(300.f);
     }
-
-    // TODO: Remove this
-    // TEMPORARY CODE
-    Profiler::Init();
 }
 
 void EntityLayer::Close() 
@@ -102,4 +105,9 @@ Oasis::Reference<Entity> EntityLayer::AddEntity(Entity * entity)
 {
     m_entities.emplace_back(entity);
     return m_entities.back();
+}
+
+std::vector<Oasis::Owned<Entity>>& EntityLayer::GetEntities()
+{
+    return m_entities;
 }
