@@ -3,6 +3,7 @@
 #include "util/trap.hpp"
 #include "util/pointer.hpp"
 #include "util/colour.hpp"
+#include "util/console.hpp"
 
 #include "core/application.hpp"
 #include "core/state.hpp"

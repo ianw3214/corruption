@@ -7,7 +7,7 @@
 ## TODOs
 
 - [x] Optimize tilemap rendering (it is super slow right now)
-- [ ] Console to show info (use ImGui wrapper)
+- [x] Console to show info (use ImGui wrapper)
 - [x] Basic profiling tools
 - [x] Clean up profiling tools code (Proper-ish initialization)
 - [ ] Visual profiling tools
@@ -25,11 +25,13 @@
 - [ ] Sprite render at offset from position
 - [ ] Camera System Based on where player is looking
 - [ ] More robust animation system
+- [ ] Only allow one movement direction at a time (diagonal movement looks weird)
 
 ***
 
 ## ART
 
+- [x] Player animation outlines
 - [ ] Player concept
 - [ ] Player sprites
 - [ ] World concept

@@ -27,6 +27,8 @@ using namespace Oasis;
 
 #include "audio/audio.hpp"
 
+#include "util/console.hpp"
+
 struct Application::Impl
 {
     SDL_Window * m_window;
@@ -71,6 +73,7 @@ Application::Application(const Configuration& config)
     ImGuiWrapper::Init();
     AudioEngine::Init();
     AudioEngine::SetListenerData();
+    Console::Init();
 }
 
 Application::~Application()

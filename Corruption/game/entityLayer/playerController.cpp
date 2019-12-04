@@ -77,7 +77,7 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
     return false;
 }
 
-constexpr float speed = 200.f;
+constexpr float speed = 300.f;
 void PlayerController::Update(float delta)
 {
     OASIS_TRAP(s_player);
