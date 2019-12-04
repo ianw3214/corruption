@@ -32,8 +32,9 @@ void GameState::Update()
 }
 
 
-void GameState::AddLayer(GameStateLayer * layer)
+Reference<GameStateLayer> GameState::AddLayer(GameStateLayer * layer)
 {
     layer->Init();
     m_layers.push_back(layer);
+    return Reference<GameStateLayer>(m_layers[m_layers.size() - 1]);
 }

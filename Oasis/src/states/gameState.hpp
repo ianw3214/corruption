@@ -30,7 +30,7 @@ namespace Oasis
         virtual void OnEvent(const Event& event) override;
         virtual void Update() override;
 
-        void AddLayer(GameStateLayer * layer);
+        Reference<GameStateLayer> AddLayer(GameStateLayer * layer);
     private:
         std::vector<Owned<GameStateLayer>> m_layers;
     };  

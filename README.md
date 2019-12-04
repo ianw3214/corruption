@@ -21,7 +21,7 @@
 - [x] Basic Collision system
 - [ ] Generalize collision system
 - [ ] Fix camera jitter on player collisions
-- [ ] Collision debug draw
+- [x] Collision debug draw
 - [ ] Sprite render at offset from position
 - [ ] Camera System Based on where player is looking
 
