@@ -10,6 +10,7 @@ class Component
 public:
     virtual ~Component() {}
     inline void SetEntity(Entity * entity) { m_entity = entity; }
+    inline Oasis::Reference<Entity> GetEntity() const { return m_entity; }
 
     virtual void Update(float delta) {}
 protected:

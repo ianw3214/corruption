@@ -8,11 +8,13 @@
 
 #include "components/renderComponent.hpp"
 #include "components/collisionComponent.hpp"
+#include "components/interactableComponent.hpp"
 
 #include "util/timer.hpp"
 
 void EntityLayer::Init() 
 {
+    InteractionManager::Init();
     PlayerController::SetGame(this);
     {   // TEMPORARY PLAYER CODE
         RenderComponent * renderComp = new RenderComponent("res/player.png", SpriteType::ANIMATED);
@@ -51,6 +53,22 @@ void EntityLayer::Init()
         entity->SetX(300.f);
         entity->SetY(300.f);
     }
+
+    {   // TEMPORARY ENTITY TESTING CODE
+        RenderComponent * renderComp = new RenderComponent("res/npc.png");
+        renderComp->SetDimensions(120, 120);
+        CollisionComponent * collisionComp = new CollisionComponent(120, 120);
+        InteractableComponent * interactComp = new InteractableComponent([](){
+            Oasis::Console::Print("TEST INTERACTION");
+        });
+        Oasis::Reference<Entity> entity = AddEntity(new Entity());
+        entity->AddComponent(renderComp);
+        entity->AddComponent(collisionComp);
+        entity->AddComponent(interactComp);
+
+        entity->SetX(400.f);
+        entity->SetY(100.f);
+    }
 }
 
 void EntityLayer::Close() 
@@ -61,6 +79,7 @@ void EntityLayer::Close()
 
 bool EntityLayer::HandleEvent(const Oasis::Event& event)
 {
+    if (InteractionManager::OnEvent(event)) return true;
     return PlayerController::OnEvent(event);
 }
 

@@ -1,7 +1,9 @@
 target_sources(Corruption PRIVATE 
     renderComponent.hpp
-    collisionComponent.hpp)
+    collisionComponent.hpp
+    interactableComponent.hpp)
 
 target_sources(Corruption PRIVATE 
     renderComponent.cpp
-    collisionComponent.cpp)
+    collisionComponent.cpp
+    interactableComponent.cpp)

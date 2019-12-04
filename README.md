@@ -16,7 +16,7 @@
 - [ ] Serialization of entities
 - [x] Full player movement animation
 - [ ] Map tile editing
-- [ ] NPCs
+- [x] NPCs (interactable component)
 - [ ] Dialogue system
 - [x] Basic Collision system
 - [ ] Generalize collision system
@@ -26,6 +26,8 @@
 - [ ] Camera System Based on where player is looking
 - [ ] More robust animation system
 - [ ] Only allow one movement direction at a time (diagonal movement looks weird)
+- [ ] Basic enemies (health component)
+- [ ] Basic AI (AI component)
 
 ***
 

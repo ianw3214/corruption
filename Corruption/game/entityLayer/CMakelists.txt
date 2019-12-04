@@ -11,3 +11,4 @@ target_sources(Corruption PRIVATE
     camera.cpp)
 
 add_subdirectory(components)
+add_subdirectory(dialogue)

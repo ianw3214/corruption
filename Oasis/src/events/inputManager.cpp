@@ -4,6 +4,7 @@ using namespace Oasis;
 #include <SDL2/SDL.h>
 
 #include "core/application.hpp"
+#include "core/windowService.hpp"
 
 #include "events/windowEvent.hpp"
 #include "events/keyEvent.hpp"
