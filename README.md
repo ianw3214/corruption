@@ -28,6 +28,7 @@
 - [ ] Only allow one movement direction at a time (diagonal movement looks weird)
 - [ ] Basic enemies (health component)
 - [ ] Basic AI (AI component)
+- [ ] Particle system
 
 ***
 
