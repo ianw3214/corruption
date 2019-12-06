@@ -2,10 +2,12 @@ target_sources(Corruption PRIVATE
     renderComponent.hpp
     collisionComponent.hpp
     interactableComponent.hpp
-    healthComponent.hpp)
+    healthComponent.hpp
+    projectileComponent.hpp)
 
 target_sources(Corruption PRIVATE 
     renderComponent.cpp
     collisionComponent.cpp
     interactableComponent.cpp
-    healthComponent.cpp)
+    healthComponent.cpp
+    projectileComponent.cpp)

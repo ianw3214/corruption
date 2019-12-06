@@ -5,9 +5,11 @@
 
 #include "entity.hpp"
 #include "entityLayer.hpp"
+#include "camera.hpp"
 
 #include "components/renderComponent.hpp"
 #include "components/collisionComponent.hpp"
+#include "components/projectileComponent.hpp"
 
 Oasis::Reference<Entity> PlayerController::s_player;
 Oasis::Reference<EntityLayer> PlayerController::s_game;
@@ -37,21 +39,25 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
         {
             s_upHeld = true;
             s_direction = Direction::UP;
+            return true;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_S)
         {
             s_downHeld = true;
             s_direction = Direction::DOWN;
+            return true;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_A)
         {
             s_leftHeld = true;
             s_direction = Direction::LEFT;
+            return true;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_D)
         {
             s_rightHeld = true;
             s_direction = Direction::RIGHT;
+            return true;
         }
     }
     if (event.GetType() == Oasis::EventType::KEY_RELEASED)
@@ -60,20 +66,51 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
         if (keyEvent.GetKey() == SDL_SCANCODE_W)
         {
             s_upHeld = false;
+            return true;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_S)
         {
             s_downHeld = false;
+            return true;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_A)
         {
             s_leftHeld = false;
+            return true;
         }
         if (keyEvent.GetKey() == SDL_SCANCODE_D)
         {
             s_rightHeld = false;
+            return true;
         }
     }
+    
+    // PLAYER ATTACK HANDLING
+    if (event.GetType() == Oasis::EventType::MOUSE_PRESS)
+    {
+        const Oasis::MousePressedEvent& mouseEvent = dynamic_cast<const Oasis::MousePressedEvent&>(event);
+        // Calculate the angle to shoot the projectile at
+        float x_diff = s_player->GetX() - static_cast<float>(Camera::GetX() + mouseEvent.GetX());
+        float y_diff = s_player->GetY() - static_cast<float>(Camera::GetY() + mouseEvent.GetY());
+        float angle = std::atan2(y_diff, -x_diff);
+        // Create a projectile entity on attack
+        {   // TEMPORARY ENTITY TESTING CODE
+            RenderComponent * renderComp = new RenderComponent("res/attack.png");
+            renderComp->SetDimensions(60, 60);
+            CollisionComponent * collisionComp = new CollisionComponent(60, 60, true);
+            ProjectileComponent * projectileComp = new ProjectileComponent(angle);
+            Oasis::Reference<Entity> entity = s_game->AddEntity(new Entity());
+            entity->AddComponent(renderComp);
+            entity->AddComponent(collisionComp);
+            entity->AddComponent(projectileComp);
+
+            // This is super hard coded to not collide with the player
+            entity->SetX(s_player->GetX() + std::cos(angle) * 140.f + 30.f);
+            entity->SetY(s_player->GetY() + std::sin(angle) * 140.f + 30.f);
+        }
+        return true;
+    }
+
     return false;
 }
 
@@ -172,6 +209,7 @@ bool PlayerController::PlayerColliding()
         }
         if (Oasis::Reference<CollisionComponent> col = ent->GetComponent<CollisionComponent>())
         {
+            if (col->Passable()) continue;
             float x = ent->GetX();
             float y = ent->GetY();
             int width = col->GetWidth();

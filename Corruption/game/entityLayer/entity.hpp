@@ -25,6 +25,9 @@ public:
     inline void SetY(float y) { m_y = y;}
     inline float GetX() const { return m_x; }
     inline float GetY() const { return m_y; }
+    inline bool ShouldRemove() const { return m_remove; }
+
+    inline void Remove() { m_remove = true; }
 
     Oasis::Reference<Component> AddComponent(Component * component);
     template<typename COMPONENT>
@@ -47,4 +50,7 @@ private:
     // Let all entities have a position
     float m_x;
     float m_y;
+
+    // Entity management
+    bool m_remove = false;
 };

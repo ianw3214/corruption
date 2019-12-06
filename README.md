@@ -31,6 +31,11 @@
 - [ ] Particle system
 - [ ] Better text rendering
 - [ ] Support rendering multiple fonts
+- [x] Player attack (Shoot projectile)
+- [ ] Remove projectiles after a while
+- [ ] Shoot projectiles based on CENTER of sprite, not edge
+- [ ] Don't render sprite if not on screen
+- [ ] Game mode service to make the game globally accessibly
 
 ***
 

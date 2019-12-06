@@ -129,6 +129,21 @@ void EntityLayer::Update()
     {
         entity->Update(delta);
     }
+
+    // Remove entities
+    auto it = m_entities.begin();
+    while(it != m_entities.end())
+    {
+        if ((*it)->ShouldRemove())
+        {
+            it = m_entities.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+        
+    }
 }
 
 Oasis::Reference<Entity> EntityLayer::AddPlayer(Entity * entity)
