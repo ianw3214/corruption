@@ -10,10 +10,15 @@ constexpr int kMapWidth = 10;
 constexpr int kMapHeight = 10;
 
 // This is the width/height of the sector in tiles
-constexpr int kSectorWidth = 10;
-constexpr int kSectorHeight = 10;
+constexpr int kSectorWidth = 15;
+constexpr int kSectorHeight = 15;
 constexpr int kSectorPixelWidth = kSectorWidth * static_cast<int>(kTileSize);
 constexpr int kSectorPixelHeight = kSectorHeight * static_cast<int>(kTileSize);
+
+// Hard coded tile metadata - will need to load from file if using more than 1 tilemap in the future
+constexpr float kTileSourceSize = 32.f;
+constexpr int kTilesheetWidth = 8;
+constexpr int kTilesheetHeight = 8;
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Each sector is a 10 by 10 section of the map that stitch together into an open world
@@ -23,6 +28,8 @@ public:
     MapSector(int x, int y);
     int GetX() const { return m_x; }
     int GetY() const { return m_y; }
+
+    void PutTile(int x, int y, int tile);
 
     // TODO: Each map should maybe store their own sprite
     void Render(Oasis::Reference<Oasis::Sprite> sprite);
@@ -49,6 +56,8 @@ public:
 
     virtual bool HandleEvent(const Oasis::Event& event) override;
     virtual void Update()  override;
+
+    void PutTile(int mouse_x, int mouse_y, int tile);
 
     MapSector& GetSectorAt(int x, int y);
 private:

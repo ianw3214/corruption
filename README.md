@@ -15,7 +15,8 @@
 - [x] Sprite render order
 - [ ] Serialization of entities
 - [x] Full player movement animation
-- [ ] Map tile editing
+- [x] Map tile editing
+- [ ] Export map (save to file)
 - [x] NPCs (interactable component)
 - [ ] Dialogue system
 - [x] Basic Collision system
@@ -53,3 +54,10 @@
 ## OTHER IMPORTANT SHIT
 
 - [ ] Main story design
+
+***
+
+## BUGS
+
+- [ ] ImGui mouse capture
+- [ ] mouse y is 'inverted'?

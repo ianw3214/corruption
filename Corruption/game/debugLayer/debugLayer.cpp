@@ -11,6 +11,7 @@
 void DebugLayer::Init() 
 {
     // Temporary code, will probably want to change this in the future
+    // TODO: Put this somewhere better
     Oasis::TextRenderer::LoadFont("res/fonts/Munro.ttf");
 
     m_drawPhysics = false;

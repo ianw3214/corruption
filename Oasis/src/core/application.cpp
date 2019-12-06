@@ -88,8 +88,13 @@ void Application::OnEvent(const Event& event)
     {
         m_running = false;
     }
-    StateManager::CurrentState()->OnEvent(event);
     ImGuiWrapper::OnEvent(event);
+    // TODO: This can probably be put into the ImGuiWrapper
+    ImGuiIO& io = ImGui::GetIO();
+    if (!io.WantCaptureMouse)
+    {
+        StateManager::CurrentState()->OnEvent(event);
+    }
 }
 
 void DisplayApplicationInfo(double * microseconds)
