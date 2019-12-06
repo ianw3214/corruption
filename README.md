@@ -32,10 +32,11 @@
 - [ ] Better text rendering
 - [ ] Support rendering multiple fonts
 - [x] Player attack (Shoot projectile)
-- [ ] Remove projectiles after a while
+- [ ] Remove projectiles after a while (can be just based off time)
 - [ ] Shoot projectiles based on CENTER of sprite, not edge
 - [ ] Don't render sprite if not on screen
 - [ ] Game mode service to make the game globally accessibly
+- [ ] Collision masks (Ignore certain collisions like projectile-projectile collisions)
 
 ***
 
