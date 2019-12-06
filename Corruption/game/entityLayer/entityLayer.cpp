@@ -9,6 +9,7 @@
 #include "components/renderComponent.hpp"
 #include "components/collisionComponent.hpp"
 #include "components/interactableComponent.hpp"
+#include "components/healthComponent.hpp"
 
 #include "util/timer.hpp"
 
@@ -24,6 +25,8 @@ void EntityLayer::Init()
 
         CollisionComponent * collisionComp = new CollisionComponent(120, 120);
 
+        HealthComponent * healthComp = new HealthComponent(10);
+
         auto anim = renderComp->GetAnimatedSprite();
         anim->AddAnimation("up", 0, 0);
         anim->AddAnimation("down", 4, 4);
@@ -38,6 +41,7 @@ void EntityLayer::Init()
         Oasis::Reference<Entity> entity = AddPlayer(new Entity());
         entity->AddComponent(renderComp);
         entity->AddComponent(collisionComp);
+        entity->AddComponent(healthComp);
 
         entity->SetX(50.f);
         entity->SetY(50.f);
@@ -68,6 +72,20 @@ void EntityLayer::Init()
 
         entity->SetX(400.f);
         entity->SetY(100.f);
+    }
+
+    {   // TEMPORARY ENTITY TESTING CODE
+        RenderComponent * renderComp = new RenderComponent("res/enemy.png");
+        renderComp->SetDimensions(120, 120);
+        CollisionComponent * collisionComp = new CollisionComponent(120, 120);
+        HealthComponent * healthComp = new HealthComponent();
+        Oasis::Reference<Entity> entity = AddEntity(new Entity());
+        entity->AddComponent(renderComp);
+        entity->AddComponent(collisionComp);
+        entity->AddComponent(healthComp);
+
+        entity->SetX(50.f);
+        entity->SetY(400.f);
     }
 }
 

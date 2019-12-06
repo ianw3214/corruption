@@ -26,9 +26,11 @@
 - [ ] Camera System Based on where player is looking
 - [ ] More robust animation system
 - [ ] Only allow one movement direction at a time (diagonal movement looks weird)
-- [ ] Basic enemies (health component)
+- [x] Health component
 - [ ] Basic AI (AI component)
 - [ ] Particle system
+- [ ] Better text rendering
+- [ ] Support rendering multiple fonts
 
 ***
 

@@ -14,4 +14,5 @@ private:
     void ImGuiWindowFunc();
 
     bool m_drawPhysics;
+    bool m_drawHealth;  // <= this is only temporary, should remove once proper health UI is done
 };
