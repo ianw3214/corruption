@@ -4,7 +4,7 @@
 
 ***
 
-## TODO
+## CORE
 
 - [x] Optimize tilemap rendering (it is super slow right now)
 - [x] Console to show info (use ImGui wrapper)
@@ -13,31 +13,40 @@
 - [ ] Visual profiling tools
 - [x] Test other entities in the map
 - [x] Sprite render order
+- [x] Basic Collision system
+- [ ] Generalize collision system
+- [ ] Better text rendering
+- [ ] Support rendering multiple fonts
+- [ ] Particle system
+- [ ] Don't render sprite if not on screen
+- [ ] More robust animation system
+- [x] Collision debug draw
+
+## SERIALIZATION
+
 - [x] Serialization of entities
 - [ ] Implement serialization for all other components
 - [ ] Figure out how to implement serialization for interactables
-- [x] Full player movement animation
-- [x] Map tile editing
 - [ ] Export map (save to file)
+
+## EDITOR
+
+- [x] Map tile editing
+- [ ] Display entity info in editor
+
+## GAMEPLAY
+
+- [x] Full player movement animation
 - [x] NPCs (interactable component)
 - [ ] Dialogue system
-- [x] Basic Collision system
-- [ ] Generalize collision system
-- [ ] Fix camera jitter on player collisions
-- [x] Collision debug draw
 - [ ] Sprite render at offset from position
 - [ ] Camera System Based on where player is looking
-- [ ] More robust animation system
 - [ ] Only allow one movement direction at a time (diagonal movement looks weird)
 - [x] Health component
 - [ ] Basic AI (AI component)
-- [ ] Particle system
-- [ ] Better text rendering
-- [ ] Support rendering multiple fonts
 - [x] Player attack (Shoot projectile)
 - [ ] Remove projectiles after a while (can be just based off time)
 - [ ] Shoot projectiles based on CENTER of sprite, not edge
-- [ ] Don't render sprite if not on screen
 - [ ] Game mode service to make the game globally accessibly
 - [ ] Collision masks (Ignore certain collisions like projectile-projectile collisions)
 
@@ -61,6 +70,7 @@
 
 ## BUGS
 
+- [ ] Fix camera jitter on player collisions
 - [ ] ImGui mouse capture
 - [ ] mouse y is 'inverted'?
 - [ ] Empty interactable component is added to manager because of serialization registration
