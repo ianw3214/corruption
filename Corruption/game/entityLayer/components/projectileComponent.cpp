@@ -1,8 +1,16 @@
 #include "projectileComponent.hpp"
+IMPL_COMPONENT(ProjectileComponent);
 
 #include "game/game.hpp"
 #include "game/entityLayer/components/collisionComponent.hpp"
 #include "game/entityLayer/components/healthComponent.hpp"
+
+ProjectileComponent::ProjectileComponent()
+    : m_angle(0.f)
+    , m_speed(0.f)
+{
+
+}
 
 ProjectileComponent::ProjectileComponent(float angle, float speed)
     : m_angle(angle)

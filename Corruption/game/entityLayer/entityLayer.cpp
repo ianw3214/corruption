@@ -5,6 +5,7 @@
 
 #include "playerController.hpp"
 #include "camera.hpp"
+#include "entitySerializer.hpp"
 
 #include "components/renderComponent.hpp"
 #include "components/collisionComponent.hpp"
@@ -15,6 +16,7 @@
 
 void EntityLayer::Init() 
 {
+    EntitySerializer::Init();
     InteractionManager::Init();
     PlayerController::SetGame(this);
     {   // TEMPORARY PLAYER CODE
@@ -86,7 +88,11 @@ void EntityLayer::Init()
 
         entity->SetX(50.f);
         entity->SetY(400.f);
+
+        EntitySerializer::ExportEntity(entity, "test.ent");
     }
+
+    AddEntity(EntitySerializer::ReadEntity("test.ent"));
 }
 
 void EntityLayer::Close() 

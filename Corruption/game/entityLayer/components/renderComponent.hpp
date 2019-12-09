@@ -4,8 +4,8 @@
 
 enum class SpriteType
 {
-    NORMAL,
-    ANIMATED
+    NORMAL = 0,
+    ANIMATED = 1
 };
 
 // Render component acts as a wrapper around the sprite class
@@ -13,7 +13,14 @@ enum class SpriteType
 class RenderComponent : public Component
 {
 public:
+    REGISTER_COMPONENT(RenderComponent);
+    
+    RenderComponent();
     RenderComponent(const std::string& path, SpriteType type = SpriteType::NORMAL);
+
+    virtual void Read(std::ifstream& file) override;
+    virtual void Write(std::ofstream& file) override;
+
     SpriteType GetType() const { return m_type; }
     Oasis::Reference<Oasis::Sprite> GetSprite();
     Oasis::Reference<Oasis::AnimatedSprite> GetAnimatedSprite();
@@ -26,4 +33,8 @@ public:
 private:
     SpriteType m_type;
     Oasis::Owned<Oasis::Sprite> m_sprite;
+
+    // State that's useful for things
+    float m_width;
+    float m_height;
 };

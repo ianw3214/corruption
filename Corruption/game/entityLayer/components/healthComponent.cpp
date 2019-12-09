@@ -1,4 +1,5 @@
 #include "healthComponent.hpp"
+IMPL_COMPONENT(HealthComponent);
 
 HealthComponent::HealthComponent(int health)
     : m_health(health)

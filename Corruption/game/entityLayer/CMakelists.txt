@@ -2,13 +2,15 @@ target_sources(Corruption PRIVATE
     entity.hpp
     entityLayer.hpp
     playerController.hpp
-    camera.hpp)
+    camera.hpp
+    entitySerializer.hpp)
 
 target_sources(Corruption PRIVATE
     entity.cpp
     entityLayer.cpp
     playerController.cpp
-    camera.cpp)
+    camera.cpp
+    entitySerializer.cpp)
 
 add_subdirectory(components)
 add_subdirectory(dialogue)

@@ -6,6 +6,8 @@ constexpr int kDefaultHealth = 5;
 class HealthComponent : public Component
 {
 public:
+    REGISTER_COMPONENT(HealthComponent);
+
     HealthComponent(int health = kDefaultHealth);
 
     inline int GetHealth() const { return m_health; }

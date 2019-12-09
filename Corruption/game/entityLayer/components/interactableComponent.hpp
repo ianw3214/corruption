@@ -23,6 +23,8 @@ private:
 class InteractableComponent : public Component
 {
 public:
+    REGISTER_COMPONENT(InteractableComponent);
+
     InteractableComponent(std::function<void()> f = [](){});
 
     void SetInteractFunc(std::function<void()> func);

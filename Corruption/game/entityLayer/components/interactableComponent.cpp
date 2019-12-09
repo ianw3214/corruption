@@ -1,4 +1,5 @@
 #include "interactableComponent.hpp"
+IMPL_COMPONENT(InteractableComponent);
 
 #include "game/entityLayer/camera.hpp"
 #include "game/entityLayer/components/collisionComponent.hpp"
@@ -27,16 +28,19 @@ bool InteractionManager::OnEvent(const Oasis::Event& e)
         for (auto ref : s_interactions)
         {
             Oasis::Reference<Entity> entity = ref->GetEntity();
-            if (Oasis::Reference<CollisionComponent> col = entity->GetComponent<CollisionComponent>())
+            if (entity)
             {
-                float x = entity->GetX();
-                float y = entity->GetY();
-                float w = static_cast<float>(col->GetWidth());
-                float h = static_cast<float>(col->GetHeight());
-                if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h)
+                if (Oasis::Reference<CollisionComponent> col = entity->GetComponent<CollisionComponent>())
                 {
-                    ref->GetInteractFunc()();
-                    return true;
+                    float x = entity->GetX();
+                    float y = entity->GetY();
+                    float w = static_cast<float>(col->GetWidth());
+                    float h = static_cast<float>(col->GetHeight());
+                    if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h)
+                    {
+                        ref->GetInteractFunc()();
+                        return true;
+                    }
                 }
             }
         }

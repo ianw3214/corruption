@@ -6,6 +6,9 @@ constexpr float kDefaultSpeed = 500.f;
 class ProjectileComponent : public Component
 {
 public:
+    REGISTER_COMPONENT(ProjectileComponent);
+
+    ProjectileComponent();
     ProjectileComponent(float angle, float speed = kDefaultSpeed);
 
     virtual void Update(float delta) override;

@@ -7,6 +7,9 @@
 class CollisionComponent : public Component
 {
 public:
+    REGISTER_COMPONENT(CollisionComponent);
+
+    CollisionComponent();
     CollisionComponent(int width, int height, bool passable = false);
 
     int GetWidth() const { return m_width; }

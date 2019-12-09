@@ -4,7 +4,7 @@
 
 ***
 
-## TODOs
+## TODO
 
 - [x] Optimize tilemap rendering (it is super slow right now)
 - [x] Console to show info (use ImGui wrapper)
@@ -13,7 +13,9 @@
 - [ ] Visual profiling tools
 - [x] Test other entities in the map
 - [x] Sprite render order
-- [ ] Serialization of entities
+- [x] Serialization of entities
+- [ ] Implement serialization for all other components
+- [ ] Figure out how to implement serialization for interactables
 - [x] Full player movement animation
 - [x] Map tile editing
 - [ ] Export map (save to file)
@@ -61,3 +63,4 @@
 
 - [ ] ImGui mouse capture
 - [ ] mouse y is 'inverted'?
+- [ ] Empty interactable component is added to manager because of serialization registration
