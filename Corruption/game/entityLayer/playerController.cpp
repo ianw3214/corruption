@@ -7,9 +7,11 @@
 #include "entityLayer.hpp"
 #include "camera.hpp"
 
-#include "components/renderComponent.hpp"
-#include "components/collisionComponent.hpp"
-#include "components/projectileComponent.hpp"
+#include "game/entityLayer/components/renderComponent.hpp"
+#include "game/entityLayer/components/collisionComponent.hpp"
+#include "game/entityLayer/components/projectileComponent.hpp"
+
+#include "game/entityLayer/systems/collision.hpp"
 
 Oasis::Reference<Entity> PlayerController::s_player;
 Oasis::Reference<EntityLayer> PlayerController::s_game;
@@ -22,7 +24,6 @@ PlayerController::Direction PlayerController::s_direction;
 void PlayerController::SetPlayer(Oasis::Reference<Entity> entity)
 {
     s_player = entity;
-    Oasis::ImGuiWrapper::AddWindowFunction(&DEBUG);
 }
 
 void PlayerController::SetGame(Oasis::Reference<EntityLayer> layer)
@@ -128,7 +129,7 @@ void PlayerController::Update(float delta)
     if (s_upHeld) 
     {
         s_player->SetY(y + speed * delta);
-        while(PlayerColliding())
+        while(Collision::Colliding(s_player))
         {
             s_player->SetY(s_player->GetY() - 1);
         }
@@ -136,7 +137,7 @@ void PlayerController::Update(float delta)
     if (s_downHeld) 
     {
         s_player->SetY(y - speed * delta);
-        while(PlayerColliding())
+        while(Collision::Colliding(s_player))
         {
             s_player->SetY(s_player->GetY() + 1);
         }
@@ -144,7 +145,7 @@ void PlayerController::Update(float delta)
     if (s_leftHeld) 
     {
         s_player->SetX(x - speed * delta);
-        while(PlayerColliding())
+        while(Collision::Colliding(s_player))
         {
             s_player->SetX(s_player->GetX() + 1);
         }
@@ -152,7 +153,7 @@ void PlayerController::Update(float delta)
     if (s_rightHeld)
     {
         s_player->SetX(x + speed * delta);
-        while(PlayerColliding())
+        while(Collision::Colliding(s_player))
         {
             s_player->SetX(s_player->GetX() - 1);
         }
@@ -187,41 +188,4 @@ void PlayerController::Update(float delta)
         if (s_direction == Direction::LEFT) anim->PlayAnimation("left");
         if (s_direction == Direction::RIGHT) anim->PlayAnimation("right");
     }
-}
-
-void PlayerController::DEBUG()
-{
-
-}
-
-bool PlayerController::PlayerColliding()
-{
-    float pX = s_player->GetX();
-    float pY = s_player->GetY();
-    int pWidth = s_player->GetComponent<CollisionComponent>()->GetWidth();
-    int pHeight = s_player->GetComponent<CollisionComponent>()->GetHeight();
-
-    for (Oasis::Reference<Entity> ent : s_game->GetEntities())
-    {
-        if (ent == s_player)
-        {
-            continue;
-        }
-        if (Oasis::Reference<CollisionComponent> col = ent->GetComponent<CollisionComponent>())
-        {
-            if (col->Passable()) continue;
-            float x = ent->GetX();
-            float y = ent->GetY();
-            int width = col->GetWidth();
-            int height = col->GetHeight();
-            if (pX < x + width && pX + pWidth > x)
-            {
-                if (pY < y + height && pY + pHeight > y)
-                {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
 }

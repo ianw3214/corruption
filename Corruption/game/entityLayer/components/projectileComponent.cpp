@@ -4,6 +4,7 @@ IMPL_COMPONENT(ProjectileComponent);
 #include "game/game.hpp"
 #include "game/entityLayer/components/collisionComponent.hpp"
 #include "game/entityLayer/components/healthComponent.hpp"
+#include "game/entityLayer/systems/collision.hpp"
 
 ProjectileComponent::ProjectileComponent()
     : m_angle(0.f)
@@ -33,34 +34,13 @@ void ProjectileComponent::Update(float delta)
         return;
     }
     // Check to see if a collision occured
-    auto layer = Game::GetEntityLayer();
-    for (Oasis::Reference<Entity> entity : layer->GetEntities())
+    if (auto target = Collision::Colliding(m_entity))
     {
-        if (entity != m_entity)
+        m_entity->Remove();
+        auto health = target->GetComponent<HealthComponent>();
+        if (health)
         {
-            if (Oasis::Reference<CollisionComponent> col = entity->GetComponent<CollisionComponent>())
-            {
-                float pX = m_entity->GetX();
-                float pY = m_entity->GetY();
-                int pW = pCollision->GetWidth();
-                int pH = pCollision->GetHeight();
-                float x = entity->GetX();
-                float y = entity->GetY();
-                int w = col->GetWidth();
-                int h = col->GetHeight();
-                if (pX < x + w && pX + pW > x)
-                {
-                    if (pY < y + h && pY + pH > y)
-                    {
-                        m_entity->Remove();
-                        auto health = entity->GetComponent<HealthComponent>();
-                        if (health)
-                        {
-                            health->TakeDamage(1);
-                        }
-                    }
-                }
-            }
+            health->TakeDamage(1);
         }
     }
 }

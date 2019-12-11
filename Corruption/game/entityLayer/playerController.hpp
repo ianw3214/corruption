@@ -11,8 +11,6 @@ public:
 
     static bool OnEvent(const Oasis::Event& event);
     static void Update(float delta);
-
-    static void DEBUG();
 private:
     static Oasis::Reference<Entity> s_player;
     static Oasis::Reference<EntityLayer> s_game;
@@ -31,8 +29,4 @@ private:
     static bool s_leftHeld;
     static bool s_rightHeld;
     static Direction s_direction;
-
-    // Helper functions
-    // TODO: This probably needs to be generalized
-    static bool PlayerColliding();
 };

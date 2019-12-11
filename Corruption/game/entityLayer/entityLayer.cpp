@@ -12,12 +12,16 @@
 #include "components/interactableComponent.hpp"
 #include "components/healthComponent.hpp"
 
+#include "systems/collision.hpp"
+
 #include "util/timer.hpp"
 
 void EntityLayer::Init() 
 {
+    // TODO: Maybe put these in the systems folder
     EntitySerializer::Init();
     InteractionManager::Init();
+    Collision::Init(this);
     PlayerController::SetGame(this);
     {   // TEMPORARY PLAYER CODE
         RenderComponent * renderComp = new RenderComponent("res/player.png", SpriteType::ANIMATED);

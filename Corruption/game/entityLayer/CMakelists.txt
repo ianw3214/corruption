@@ -14,3 +14,4 @@ target_sources(Corruption PRIVATE
 
 add_subdirectory(components)
 add_subdirectory(dialogue)
+add_subdirectory(systems)
