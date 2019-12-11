@@ -50,6 +50,9 @@
 - [ ] Shoot projectiles based on CENTER of sprite, not edge
 - [ ] Game mode service to make the game globally accessibly
 - [ ] Collision masks (Ignore certain collisions like projectile-projectile collisions)
+- [ ] Player attack animations
+- [ ] Spawn point system
+- [ ] Save Game system
 
 ***
 
