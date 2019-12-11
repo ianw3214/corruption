@@ -17,6 +17,19 @@ CollisionComponent::CollisionComponent(int width, int height, bool passable)
     
 }
 
+void CollisionComponent::Read(std::ifstream& file)
+{
+    file.read((char*) &m_width, sizeof(int));
+    file.read((char*) &m_height, sizeof(int));
+}
+
+void CollisionComponent::Write(std::ofstream& file)
+{
+    file.write((const char*) &m_width, sizeof(int));
+    file.write((const char*) &m_height, sizeof(int));
+}
+
+
 void CollisionComponent::Update(float delta) 
 {
     // Does nothing in update

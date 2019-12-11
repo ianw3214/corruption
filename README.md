@@ -14,7 +14,7 @@
 - [x] Test other entities in the map
 - [x] Sprite render order
 - [x] Basic Collision system
-- [ ] Generalize collision system
+- [x] Generalize collision system
 - [ ] Better text rendering
 - [ ] Support rendering multiple fonts
 - [ ] Particle system
@@ -25,7 +25,8 @@
 ## SERIALIZATION
 
 - [x] Serialization of entities
-- [ ] Implement serialization for all other components
+- [x] Implement collision component serialization
+- [ ] Implement health component serialization
 - [ ] Figure out how to implement serialization for interactables
 - [ ] Export map (save to file)
 

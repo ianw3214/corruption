@@ -12,6 +12,9 @@ public:
     CollisionComponent();
     CollisionComponent(int width, int height, bool passable = false);
 
+    virtual void Read(std::ifstream& file) override;
+    virtual void Write(std::ofstream& file) override;
+
     int GetWidth() const { return m_width; }
     int GetHeight() const { return m_height; }
     bool Passable() const { return m_passable; }
