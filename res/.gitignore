@@ -1,5 +1,3 @@
-# Ignore everything
-*
-!*/
-!/shaders/**
-!.gitignore
+# Ignore unimportant assets
+concepts/
+media/
