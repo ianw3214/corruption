@@ -72,6 +72,6 @@
 ## BUGS
 
 - [ ] Fix camera jitter on player collisions
-- [ ] ImGui mouse capture
+- [x] ImGui mouse capture
 - [ ] mouse y is 'inverted'?
 - [ ] Empty interactable component is added to manager because of serialization registration

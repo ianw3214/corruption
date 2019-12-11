@@ -90,8 +90,17 @@ void Application::OnEvent(const Event& event)
     }
     ImGuiWrapper::OnEvent(event);
     // TODO: This can probably be put into the ImGuiWrapper
+    // TODO: Put this back into Oasis Repository with a BETTER FIX PLEASE
+    // TODO: Can probably make event categories to make this easier
     ImGuiIO& io = ImGui::GetIO();
-    if (!io.WantCaptureMouse)
+    if (!io.WantCaptureMouse || 
+            (
+                event.GetType() != EventType::MOUSE_MOVE &&
+                event.GetType() != EventType::MOUSE_PRESS &&
+                event.GetType() != EventType::MOUSE_RELEASE &&
+                event.GetType() != EventType::MOUSE_SCROLL
+            )
+        )
     {
         StateManager::CurrentState()->OnEvent(event);
     }
