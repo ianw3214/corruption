@@ -16,6 +16,12 @@ void DebugLayer::Init()
         ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
         static bool show = true;
         ImGui::Begin("DEBUG", &show, ImGuiWindowFlags_MenuBar);
+
+        // General debug info
+        auto player = Game::GetEntityLayer()->GetPlayer();
+        ImGui::Text("Player Position: (%.2f, %.2f)", player->GetX(), player->GetY());
+
+        // Draw flags
         ImGui::Checkbox("Draw collisions", &m_drawPhysics);
         ImGui::Checkbox("Draw health", &m_drawHealth);
         ImGui::End();   

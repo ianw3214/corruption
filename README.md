@@ -29,11 +29,17 @@
 - [x] Implement health component serialization
 - [ ] Figure out how to implement serialization for interactables
 - [x] Export map (save to file)
+- [ ] Figure out how to save entities (most likely with map)
+- [ ] Figure out loading algorithm for entities
 
 ## EDITOR
 
 - [x] Map tile editing
 - [ ] Display entity info in editor
+- [ ] Select entities in editor
+- [ ] Drag/drop entities in editor
+- [ ] Delete entities in editor
+- [ ] Add new entities in editor
 
 ## GAMEPLAY
 

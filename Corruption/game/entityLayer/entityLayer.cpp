@@ -49,8 +49,8 @@ void EntityLayer::Init()
         entity->AddComponent(collisionComp);
         entity->AddComponent(healthComp);
 
-        entity->SetX(50.f);
-        entity->SetY(50.f);
+        entity->SetX(7000.f);
+        entity->SetY(7000.f);
     }
 
     {   // TEMPORARY ENTITY TESTING CODE

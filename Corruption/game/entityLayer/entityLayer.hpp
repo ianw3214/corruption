@@ -20,6 +20,7 @@ public:
 
     // I think this is bad code, try to return references somehow
     std::vector<Oasis::Owned<Entity>>& GetEntities();
+    inline Oasis::Reference<Entity> GetPlayer() { return m_player; }
 private:
     std::vector<Oasis::Owned<Entity>> m_entities;
 

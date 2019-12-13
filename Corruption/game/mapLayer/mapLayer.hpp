@@ -32,7 +32,6 @@ public:
     void PutTile(int x, int y, int tile);
     void SaveToFile();
 
-    // TODO: Each map should maybe store their own sprite
     void Render(Oasis::Reference<Oasis::Sprite> sprite);
 private:
     int m_x;
