@@ -8,14 +8,13 @@
 class Game : public Oasis::GameState
 {
 public:
-    // TODO: move this to a separate 'service' class
-    // Make sure these aren't called inside init functions otherwise reference will be null
-    // Helper functions
+    // Helper functions to access game layers
     static Oasis::Reference<EntityLayer> GetEntityLayer() { return s_entityLayer; }
     static Oasis::Reference<MapLayer> GetMapLayer() { return s_mapLayer; }
 
     virtual void InitLayers() override
     {
+        // Layers are added top -> bottom
         AddLayer(new EditorLayer());
         s_mapLayer = Oasis::DynamicCast<MapLayer>(AddLayer(new MapLayer()));
         s_entityLayer = Oasis::DynamicCast<EntityLayer>(AddLayer(new EntityLayer()));

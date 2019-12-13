@@ -10,10 +10,6 @@
 #include "imgui.h"
 void DebugLayer::Init() 
 {
-    // Temporary code, will probably want to change this in the future
-    // TODO: Put this somewhere better
-    Oasis::TextRenderer::LoadFont("res/fonts/Munro.ttf");
-
     m_drawPhysics = false;
     m_drawHealth = false;
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
@@ -38,8 +34,7 @@ bool DebugLayer::HandleEvent(const Oasis::Event& event)
 
 void DebugLayer::Update()  
 {
-    Oasis::Reference<EntityLayer> layers = Game::GetEntityLayer();
-    for (Oasis::Reference<Entity> entity : layers->GetEntities())
+    for (Oasis::Reference<Entity> entity : Game::GetEntityLayer()->GetEntities())
     {
         if (m_drawPhysics)
         {

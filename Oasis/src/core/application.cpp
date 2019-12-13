@@ -66,7 +66,6 @@ Application::Application(const Configuration& config)
     // Initialize subsystems
     WindowService::Init(this);
     ResourceManager::Init();
-    StateManager::Init(config.m_initState());
     Renderer::Init();
     TextRenderer::Init();
     InputManager::Init(std::bind(&Application::OnEvent, this, std::placeholders::_1));
@@ -74,6 +73,8 @@ Application::Application(const Configuration& config)
     AudioEngine::Init();
     AudioEngine::SetListenerData();
     Console::Init();
+    // Initialize the state manager last in case a state depends on a subsystem for some reason
+    StateManager::Init(config.m_initState());
 }
 
 Application::~Application()
@@ -123,8 +124,6 @@ void Application::Run()
     double duration = 1000000.0 / 24.0;
     ImGuiWrapper::AddWindowFunction(std::bind(DisplayApplicationInfo, &duration));
 
-    // TODO: Move this somewhere else
-    StateManager::CurrentState()->Init();
     m_running = true;
     while(m_running)
     {
@@ -134,6 +133,7 @@ void Application::Run()
         Renderer::Clear({1.f, 0.f, 1.f});
         InputManager::Update();
         StateManager::CurrentState()->Update();
+        StateManager::Update();
 
         ImGuiWrapper::Update(static_cast<float>(duration / 1000.0));
 

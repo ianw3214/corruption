@@ -54,6 +54,10 @@
 - [ ] Spawn point system
 - [ ] Save Game system
 
+## MISC
+
+- [x] Implement title game state
+
 ***
 
 ## ART
