@@ -30,6 +30,7 @@ public:
     int GetY() const { return m_y; }
 
     void PutTile(int x, int y, int tile);
+    void SaveToFile();
 
     // TODO: Each map should maybe store their own sprite
     void Render(Oasis::Reference<Oasis::Sprite> sprite);
@@ -38,7 +39,6 @@ private:
     int m_y;
 
     int m_tiles[kSectorWidth * kSectorHeight];
-    void SaveToFile();
 
     // Store buffers to avoid having to draw it every time
     VertexArray * m_va;
@@ -58,6 +58,7 @@ public:
     virtual void Update()  override;
 
     void PutTile(int mouse_x, int mouse_y, int tile);
+    void SaveMap();
 
     MapSector& GetSectorAt(int x, int y);
 private:
@@ -66,4 +67,7 @@ private:
     // Might want to store this in a better data structure in the future
     // if access needs are INTENSE or something like that
     std::vector<MapSector> m_sectors;
+
+    // These store temporary state that are serialization utilities
+    std::vector<bool> m_dirtyFlags;
 };

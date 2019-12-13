@@ -14,6 +14,16 @@ void EditorLayer::Init()
         ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
         static bool show = true;
         ImGui::Begin("EDITOR", &show, ImGuiWindowFlags_MenuBar);
+        // Menu bar
+        if (ImGui::BeginMenuBar())
+        {
+            if (ImGui::MenuItem("Save map", nullptr, nullptr))
+            {
+                Game::GetMapLayer()->SaveMap();
+            }
+        }
+        ImGui::EndMenuBar();
+
         ImGui::Checkbox("Editor Mode", &m_editorMode);
         ImGui::SliderInt("TILE", &m_currTile, 0, kTilesheetWidth * kTilesheetHeight);
         ImGui::End();   
@@ -42,7 +52,6 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
         if (m_editorMode)
         {
             Oasis::Reference<MapLayer> map = Game::GetMapLayer();
-            // TODO: This is a SUPER HACK
             map->PutTile(mouseEvent.GetX(), Oasis::WindowService::WindowHeight() - mouseEvent.GetY(), m_currTile);
             return true;
         }

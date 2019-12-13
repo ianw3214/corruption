@@ -41,26 +41,25 @@ void MapSector::PutTile(int x, int y, int tile)
     CreateBufferData();
 }
 
+void MapSector::SaveToFile()
+{
+    std::string filename("res/maps/" + std::to_string(m_x) + "-" + std::to_string(m_y) + ".dat");
+    std::ofstream file(filename, std::ios::binary);
+    if (file.is_open())
+    {
+        file.write((const char*) m_tiles, sizeof(m_tiles));
+    }
+    else
+    {
+        OASIS_TRAP(false);
+    }
+}
+
 void MapSector::Render(Oasis::Reference<Oasis::Sprite> sprite)
 {
     int pixel_x = m_x * kSectorPixelWidth;
     int pixel_y = m_y * kSectorPixelHeight;
 
-    /*
-    if (pixel_x + kSectorPixelWidth < 0 || pixel_y + kSectorPixelHeight < 0) return;
-    if (pixel_x > Oasis::WindowService::WindowWidth() || pixel_y > Oasis::WindowService::WindowHeight()) return;
-    */
-
-    /*
-    for (int y = 0; y < kSectorHeight; ++y)
-    {
-        for (int x = 0; x < kSectorWidth; ++x)
-        {
-            sprite->SetPos(pixel_x + x * kTileSize, pixel_y + y * kTileSize);
-            Oasis::Renderer::DrawSprite(sprite);
-        }
-    }
-    */
     Oasis::Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>(sprite->GetTexturePath());
 
     texture->bind();
@@ -75,20 +74,6 @@ void MapSector::Render(Oasis::Reference<Oasis::Sprite> sprite)
     m_ib->bind();
 
     glDrawElements(GL_TRIANGLES, m_ib->getCount(), GL_UNSIGNED_INT, nullptr);    
-}
-
-void MapSector::SaveToFile()
-{
-    std::string filename("res/maps/" + std::to_string(m_x) + "-" + std::to_string(m_y) + ".dat");
-    std::ofstream file(filename, std::ios::binary);
-    if (file.is_open())
-    {
-        file.write((const char*) m_tiles, sizeof(m_tiles));
-    }
-    else
-    {
-        OASIS_TRAP(false);
-    }
 }
 
 void MapSector::CreateBufferData()
@@ -163,6 +148,7 @@ void MapLayer::Init()
         for (int y = 0; y < kMapHeight; ++y)
         {
             m_sectors.emplace_back(x, y);
+            m_dirtyFlags.emplace_back(false);
         }
     }
     if (!mapShader)
@@ -211,6 +197,20 @@ void MapLayer::PutTile(int mouse_x, int mouse_y, int tile)
     if (sector_x >= 0 && sector_x < kMapWidth && sector_y >= 0 && sector_y < kMapHeight)
     {
         GetSectorAt(sector_x, sector_y).PutTile(x, y, tile);
+        m_dirtyFlags[sector_y * kMapWidth + sector_x] = true;
+    }
+}
+
+void MapLayer::SaveMap()
+{
+    OASIS_TRAP(m_sectors.size() == m_dirtyFlags.size());
+    for (unsigned int i = 0; i < m_dirtyFlags.size(); ++i)
+    {
+        if (m_dirtyFlags[i])
+        {
+            m_sectors[i].SaveToFile();
+            m_dirtyFlags[i] = false;
+        }
     }
 }
 

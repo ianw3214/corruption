@@ -28,7 +28,7 @@
 - [x] Implement collision component serialization
 - [x] Implement health component serialization
 - [ ] Figure out how to implement serialization for interactables
-- [ ] Export map (save to file)
+- [x] Export map (save to file)
 
 ## EDITOR
 
