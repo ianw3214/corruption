@@ -10,6 +10,9 @@ public:
 
     HealthComponent(int health = kDefaultHealth);
 
+    virtual void Read(std::ifstream& file) override;
+    virtual void Write(std::ofstream& file) override;
+
     inline int GetHealth() const { return m_health; }
     void TakeDamage(int damage);
     bool IsDead() const;
