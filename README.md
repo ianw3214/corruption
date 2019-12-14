@@ -39,7 +39,12 @@
 - [ ] Select entities in editor
 - [ ] Drag/drop entities in editor
 - [ ] Delete entities in editor
-- [ ] Add new entities in editor
+- [x] Add new entities in editor (started)
+- [ ] Collision component for entities in editor
+- [ ] Health component for entities in editor
+- [ ] Interactable component for entities in editor
+- [ ] Animated sprite render component in editor
+- [ ] Handle folders in file browser
 
 ## GAMEPLAY
 
@@ -48,7 +53,7 @@
 - [ ] Dialogue system
 - [ ] Sprite render at offset from position
 - [ ] Camera System Based on where player is looking
-- [ ] Only allow one movement direction at a time (diagonal movement looks weird)
+- [x] Only allow one movement direction at a time (diagonal movement looks weird)
 - [x] Health component
 - [ ] Basic AI (AI component)
 - [x] Player attack (Shoot projectile)
@@ -56,13 +61,15 @@
 - [ ] Shoot projectiles based on CENTER of sprite, not edge
 - [ ] Game mode service to make the game globally accessibly
 - [ ] Collision masks (Ignore certain collisions like projectile-projectile collisions)
-- [ ] Player attack animations
+- [x] Player attack animations
+- [ ] Player attack cooldowns
 - [ ] Spawn point system
 - [ ] Save Game system
 
 ## MISC
 
 - [x] Implement title game state
+- [ ] Move camera out of entity layer
 
 ***
 
@@ -84,6 +91,7 @@
 
 ## BUGS
 
+- [ ] Bad layer system design (top-bottom inverted for input vs rendering)
 - [ ] Fix camera jitter on player collisions
 - [x] ImGui mouse capture
 - [ ] mouse y is 'inverted'?

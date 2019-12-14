@@ -1,19 +1,34 @@
 #include "editorLayer.hpp"
 
+#include <string>
+#include <vector>
+#include <filesystem>
+namespace fs = std::filesystem;
+
 #include <SDL2/SDL.h>
 #include <imgui.h>
 
 #include "game/game.hpp"
 #include "game/mapLayer/mapLayer.hpp"
+#include "game/entityLayer/camera.hpp"
+#include "game/entityLayer/entity.hpp"
+#include "game/entityLayer/entityLayer.hpp"
+
+#include "game/entityLayer/components/renderComponent.hpp"
 
 void EditorLayer::Init()
 {
     m_editorMode = false;
     m_currTile = 0;
+    m_newEntityWindow = false;
+
+    ResetNewEntityProperties();
+
+    m_showingFileBrowser = false;
+
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
         ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
-        static bool show = true;
-        ImGui::Begin("EDITOR", &show, ImGuiWindowFlags_MenuBar);
+        ImGui::Begin("EDITOR", nullptr, ImGuiWindowFlags_MenuBar);
         // Menu bar
         if (ImGui::BeginMenuBar())
         {
@@ -21,12 +36,32 @@ void EditorLayer::Init()
             {
                 Game::GetMapLayer()->SaveMap();
             }
+            if (ImGui::MenuItem("New entity", nullptr, nullptr))
+            {
+                m_newEntityWindow = true;
+            }
         }
         ImGui::EndMenuBar();
 
         ImGui::Checkbox("Editor Mode", &m_editorMode);
         ImGui::SliderInt("TILE", &m_currTile, 0, kTilesheetWidth * kTilesheetHeight);
         ImGui::End();   
+    });
+    Oasis::ImGuiWrapper::AddWindowFunction([=](){
+        if (m_showingFileBrowser || m_newEntityWindow)
+        {
+            ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
+            ImGui::Begin("NEW ENTITY", nullptr, ImGuiWindowFlags_MenuBar);
+            if (m_showingFileBrowser)
+            {
+                FileBrowserWindowFunc();
+            }
+            else if (m_newEntityWindow)
+            {
+                NewEntityWindowFunc();
+            }
+            ImGui::End();
+        }
     });
 }
 
@@ -61,5 +96,89 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
 
 void EditorLayer::Update() 
 {
+    // If there's a new entity being created, render some stuff about it
+    if (m_newEntityWindow)
+    {
+        if (m_entityRenderComp)
+        {
+            if (m_renderCompPath.size() > 0)
+            {
+                Oasis::Sprite sprite(m_renderCompPath);
+                sprite.SetPos(m_newEntityX - Camera::GetX(), m_newEntityY - Camera::GetY());
+                sprite.SetDimensions(m_renderCompWidth, m_renderCompHeight);
+                Oasis::Renderer::DrawSprite(sprite);
+            }
+        }
+    }
+}
 
+void EditorLayer::NewEntityWindowFunc()
+{   
+    // Get state for the new entity
+    ImGui::SliderFloat("x", &m_newEntityX, 0.f, 15000.f);
+    ImGui::SliderFloat("y", &m_newEntityY, 0.f, 15000.f);
+    
+    ImGui::Checkbox("Render component", &m_entityRenderComp);
+    if (m_entityRenderComp)
+    {
+        ImGui::Text("texture: %s", m_renderCompPath.c_str());
+        ImGui::SliderFloat("width", &m_renderCompWidth, 0.f, 500.f);
+        ImGui::SliderFloat("height", &m_renderCompHeight, 0.f, 500.f);
+        if (ImGui::Button("Change texture"))
+        {
+            m_showingFileBrowser = true;
+        }
+    }
+
+    // Export entity and close window when done
+    if (ImGui::Button("Done"))
+    {
+        AddNewEntityToGame();
+        m_newEntityWindow = false;
+    }
+}
+
+void EditorLayer::FileBrowserWindowFunc()
+{
+    std::string path = kBaseTextureResourceDirectory;
+    for (const auto& entry : fs::directory_iterator(path))
+    {
+        fs::path path = entry.path();
+        std::string str = path.string();
+        if (ImGui::Button(str.c_str()))
+        {
+            m_renderCompPath = str;
+            m_showingFileBrowser = false;
+            break;
+        }
+    }
+    if (ImGui::Button("Cancel"))
+    {
+        m_showingFileBrowser = false;
+    }
+}
+
+void EditorLayer::AddNewEntityToGame()
+{
+    RenderComponent * renderComp = new RenderComponent(m_renderCompPath);
+    renderComp->SetDimensions(m_renderCompWidth, m_renderCompHeight);
+
+    Entity * entity = new Entity();
+    entity->SetX(m_newEntityX);
+    entity->SetY(m_newEntityY);
+    entity->AddComponent(renderComp);
+
+    Game::GetEntityLayer()->AddEntity(entity);
+
+    void ResetNewEntityProperties();
+}
+
+void EditorLayer::ResetNewEntityProperties()
+{
+    m_newEntityX = 0.f;
+    m_newEntityY = 0.f;
+    m_entityRenderComp = false;
+    m_renderCompWidth = 0.f;
+    m_renderCompHeight = 0.f;
+    m_renderCompPath = "";
 }

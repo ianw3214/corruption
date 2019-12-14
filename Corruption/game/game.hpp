@@ -15,8 +15,8 @@ public:
     virtual void InitLayers() override
     {
         // Layers are added top -> bottom
-        AddLayer(new EditorLayer());
         s_mapLayer = Oasis::DynamicCast<MapLayer>(AddLayer(new MapLayer()));
+        AddLayer(new EditorLayer());
         s_entityLayer = Oasis::DynamicCast<EntityLayer>(AddLayer(new EntityLayer()));
         AddLayer(new DebugLayer());
     }

@@ -116,7 +116,6 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
             }
             // Figure out what animation to play depending on the angle
             {
-                Oasis::Console::Print(std::to_string(angle));
                 Oasis::Reference<RenderComponent> renderComp = s_player->GetComponent<RenderComponent>();
                 OASIS_TRAP(renderComp);
                 auto anim = renderComp->GetAnimatedSprite();
