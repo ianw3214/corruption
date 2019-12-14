@@ -42,6 +42,10 @@ void EntityLayer::Init()
         anim->AddAnimation("run_down", 20, 23);
         anim->AddAnimation("run_left", 24, 27);
         anim->AddAnimation("run_right", 28, 31);
+        anim->AddAnimation("attack_up", 32, 34);
+        anim->AddAnimation("attack_down", 36, 38);
+        anim->AddAnimation("attack_left", 40, 42);
+        anim->AddAnimation("attack_right", 44, 46);
         anim->SetFPS(10);
 
         Oasis::Reference<Entity> entity = AddPlayer(new Entity());
