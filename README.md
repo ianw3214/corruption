@@ -92,7 +92,7 @@
 ## BUGS
 
 - [ ] Bad layer system design (top-bottom inverted for input vs rendering)
-- [ ] Fix camera jitter on player collisions
+- [x] Fix camera jitter on player collisions
 - [x] ImGui mouse capture
 - [ ] mouse y is 'inverted'?
 - [ ] Empty interactable component is added to manager because of serialization registration

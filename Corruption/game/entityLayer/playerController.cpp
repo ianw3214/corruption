@@ -163,7 +163,7 @@ void PlayerController::Update(float delta)
             s_player->SetY(y + speed * delta);
             while(Collision::Colliding(s_player))
             {
-                s_player->SetY(s_player->GetY() - 1);
+                s_player->SetY(std::floor(s_player->GetY() - 1));
             }
         }
         if (s_downHeld) 
@@ -171,7 +171,7 @@ void PlayerController::Update(float delta)
             s_player->SetY(y - speed * delta);
             while(Collision::Colliding(s_player))
             {
-                s_player->SetY(s_player->GetY() + 1);
+                s_player->SetY(std::ceil(s_player->GetY() + 1));
             }
         }
         if (s_leftHeld) 
@@ -179,7 +179,7 @@ void PlayerController::Update(float delta)
             s_player->SetX(x - speed * delta);
             while(Collision::Colliding(s_player))
             {
-                s_player->SetX(s_player->GetX() + 1);
+                s_player->SetX(std::ceil(s_player->GetX() + 1));
             }
         }
         if (s_rightHeld)
@@ -187,7 +187,7 @@ void PlayerController::Update(float delta)
             s_player->SetX(x + speed * delta);
             while(Collision::Colliding(s_player))
             {
-                s_player->SetX(s_player->GetX() - 1);
+                s_player->SetX(std::floor(s_player->GetX() - 1));
             }
         }
     }
