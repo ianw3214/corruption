@@ -112,6 +112,17 @@ void EditorLayer::Update()
                 Oasis::Renderer::DrawSprite(sprite);
             }
         }
+        if (m_entityCollisionComp)
+        {
+            float x = m_newEntityX - Camera::GetX();
+            float y = m_newEntityY - Camera::GetY();
+            float w = static_cast<float>(m_collisionCompWidth);
+            float h = static_cast<float>(m_collisionCompHeight);
+            Oasis::Renderer::DrawLine(x, y, x, y + h, Oasis::Colour{1.f, .5f, 0.f});
+            Oasis::Renderer::DrawLine(x, y, x + w, y, Oasis::Colour{1.f, .5f, 0.f});
+            Oasis::Renderer::DrawLine(x + w, y, x + w, y + h, Oasis::Colour{1.f, .5f, 0.f});
+            Oasis::Renderer::DrawLine(x, y + h, x + w, y + h, Oasis::Colour{1.f, .5f, 0.f});
+        }
     }
 }
 
