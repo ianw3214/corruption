@@ -27,6 +27,7 @@ void EditorLayer::Init()
     ResetNewEntityProperties();
 
     m_showingFileBrowser = false;
+    m_currentPath = kBaseTextureResourceDirectory;
 
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
         ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
@@ -153,22 +154,52 @@ void EditorLayer::NewEntityWindowFunc()
 
 void EditorLayer::FileBrowserWindowFunc()
 {
-    std::string path = kBaseTextureResourceDirectory;
-    for (const auto& entry : fs::directory_iterator(path))
+    // If we are deeper into the resource folder, allow going back
+    if (m_currentPath != kBaseTextureResourceDirectory)
+    {
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.6f, .5f, .7f, 1.f));
+        if (ImGui::Button("back"))
+        {
+            fs::path path = m_currentPath;
+            fs::path parent = path.parent_path();
+            m_currentPath = parent.string();
+        }
+        ImGui::PopStyleColor();
+    }
+    for (const auto& entry : fs::directory_iterator(m_currentPath))
     {
         fs::path path = entry.path();
         std::string str = path.string();
+        if (fs::is_directory(path))
+        {
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.1f, .1f, .4f, 1.f));
+        }
         if (ImGui::Button(str.c_str()))
         {
-            m_renderCompPath = str;
-            m_showingFileBrowser = false;
-            break;
+            if (fs::is_directory(path))
+            {
+                m_currentPath = str;
+            }
+            else
+            {
+                m_renderCompPath = str;
+                m_showingFileBrowser = false;
+                m_currentPath = kBaseTextureResourceDirectory;
+                break;
+            }
+        }
+        if (fs::is_directory(path))
+        {
+            ImGui::PopStyleColor();
         }
     }
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(.6f, .5f, .7f, 1.f));
     if (ImGui::Button("Cancel"))
     {
         m_showingFileBrowser = false;
+        m_currentPath = kBaseTextureResourceDirectory;
     }
+    ImGui::PopStyleColor();
 }
 
 void EditorLayer::AddNewEntityToGame()

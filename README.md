@@ -44,7 +44,7 @@
 - [x] Health component for entities in editor
 - [ ] Interactable component for entities in editor
 - [ ] Animated sprite render component in editor
-- [ ] Handle folders in file browser
+- [x] Handle folders in file browser
 
 ## GAMEPLAY
 

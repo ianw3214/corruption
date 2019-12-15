@@ -1,7 +1,7 @@
 #pragma once
 #include "oasis.h"
 
-constexpr char * kBaseTextureResourceDirectory = "res/";
+constexpr char * kBaseTextureResourceDirectory = "res";
 
 class Entity;
 
@@ -46,4 +46,5 @@ private:
     // FILE BROWSER
     /////////////////////////////////////
     bool m_showingFileBrowser;
+    std::string m_currentPath;
 };
