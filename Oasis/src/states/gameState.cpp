@@ -16,9 +16,9 @@ void GameState::Close()
 
 void GameState::OnEvent(const Event& event)
 {
-    for(auto& layer : m_layers)
+    for (int i = static_cast<int>(m_layers.size()) - 1; i >= 0; --i)
     {
-        bool handled = layer->HandleEvent(event);
+        bool handled = m_layers[i]->HandleEvent(event);
         if (handled) break;
     }
 }
