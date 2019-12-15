@@ -38,6 +38,8 @@ private:
     bool m_entityCollisionComp;
     int m_collisionCompWidth;
     int m_collisionCompHeight;
+    bool m_entityHealthComp;
+    int m_healthCompHealth;
     std::string m_renderCompPath;
 
     /////////////////////////////////////

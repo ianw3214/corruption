@@ -16,6 +16,7 @@ namespace fs = std::filesystem;
 
 #include "game/entityLayer/components/renderComponent.hpp"
 #include "game/entityLayer/components/collisionComponent.hpp"
+#include "game/entityLayer/components/healthComponent.hpp"
 
 void EditorLayer::Init()
 {
@@ -136,6 +137,11 @@ void EditorLayer::NewEntityWindowFunc()
         ImGui::SliderInt("collision width", &m_collisionCompWidth, 0, 500);
         ImGui::SliderInt("collision height", &m_collisionCompHeight, 0, 500);
     }
+    ImGui::Checkbox("Health Component", &m_entityHealthComp);
+    if (m_entityHealthComp)
+    {
+        ImGui::SliderInt("health", &m_healthCompHealth, 0, 20);
+    }
 
     // Export entity and close window when done
     if (ImGui::Button("Done"))
@@ -181,6 +187,11 @@ void EditorLayer::AddNewEntityToGame()
         CollisionComponent * collisionComp = new CollisionComponent(m_collisionCompWidth, m_collisionCompHeight);
         entity->AddComponent(collisionComp);
     }
+    if (m_entityHealthComp)
+    {
+        HealthComponent * healthComp = new HealthComponent(m_healthCompHealth);
+        entity->AddComponent(healthComp);
+    }
 
     Game::GetEntityLayer()->AddEntity(entity);
 
@@ -198,4 +209,6 @@ void EditorLayer::ResetNewEntityProperties()
     m_entityCollisionComp = false;
     m_collisionCompWidth = 0;
     m_collisionCompHeight = 0;
+    m_entityHealthComp = false;
+    m_healthCompHealth = 0;
 }

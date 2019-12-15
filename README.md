@@ -41,7 +41,7 @@
 - [ ] Delete entities in editor
 - [x] Add new entities in editor (started)
 - [x] Collision component for entities in editor
-- [ ] Health component for entities in editor
+- [x] Health component for entities in editor
 - [ ] Interactable component for entities in editor
 - [ ] Animated sprite render component in editor
 - [ ] Handle folders in file browser
