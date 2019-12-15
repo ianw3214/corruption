@@ -15,6 +15,7 @@ namespace fs = std::filesystem;
 #include "game/entityLayer/entityLayer.hpp"
 
 #include "game/entityLayer/components/renderComponent.hpp"
+#include "game/entityLayer/components/collisionComponent.hpp"
 
 void EditorLayer::Init()
 {
@@ -122,12 +123,18 @@ void EditorLayer::NewEntityWindowFunc()
     if (m_entityRenderComp)
     {
         ImGui::Text("texture: %s", m_renderCompPath.c_str());
-        ImGui::SliderFloat("width", &m_renderCompWidth, 0.f, 500.f);
-        ImGui::SliderFloat("height", &m_renderCompHeight, 0.f, 500.f);
+        ImGui::SliderFloat("render width", &m_renderCompWidth, 0.f, 500.f);
+        ImGui::SliderFloat("render height", &m_renderCompHeight, 0.f, 500.f);
         if (ImGui::Button("Change texture"))
         {
             m_showingFileBrowser = true;
         }
+    }
+    ImGui::Checkbox("Collision Component", &m_entityCollisionComp);
+    if (m_entityCollisionComp)
+    {
+        ImGui::SliderInt("collision width", &m_collisionCompWidth, 0, 500);
+        ImGui::SliderInt("collision height", &m_collisionCompHeight, 0, 500);
     }
 
     // Export entity and close window when done
@@ -160,13 +167,20 @@ void EditorLayer::FileBrowserWindowFunc()
 
 void EditorLayer::AddNewEntityToGame()
 {
-    RenderComponent * renderComp = new RenderComponent(m_renderCompPath);
-    renderComp->SetDimensions(m_renderCompWidth, m_renderCompHeight);
-
     Entity * entity = new Entity();
     entity->SetX(m_newEntityX);
     entity->SetY(m_newEntityY);
-    entity->AddComponent(renderComp);
+    if (m_entityRenderComp)
+    {
+        RenderComponent * renderComp = new RenderComponent(m_renderCompPath);
+        renderComp->SetDimensions(m_renderCompWidth, m_renderCompHeight);
+        entity->AddComponent(renderComp);
+    }
+    if (m_entityCollisionComp)
+    {
+        CollisionComponent * collisionComp = new CollisionComponent(m_collisionCompWidth, m_collisionCompHeight);
+        entity->AddComponent(collisionComp);
+    }
 
     Game::GetEntityLayer()->AddEntity(entity);
 
@@ -181,4 +195,7 @@ void EditorLayer::ResetNewEntityProperties()
     m_renderCompWidth = 0.f;
     m_renderCompHeight = 0.f;
     m_renderCompPath = "";
+    m_entityCollisionComp = false;
+    m_collisionCompWidth = 0;
+    m_collisionCompHeight = 0;
 }

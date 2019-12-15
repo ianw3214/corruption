@@ -35,6 +35,9 @@ private:
     bool m_entityRenderComp;
     float m_renderCompWidth;
     float m_renderCompHeight;
+    bool m_entityCollisionComp;
+    int m_collisionCompWidth;
+    int m_collisionCompHeight;
     std::string m_renderCompPath;
 
     /////////////////////////////////////

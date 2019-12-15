@@ -40,7 +40,7 @@
 - [ ] Drag/drop entities in editor
 - [ ] Delete entities in editor
 - [x] Add new entities in editor (started)
-- [ ] Collision component for entities in editor
+- [x] Collision component for entities in editor
 - [ ] Health component for entities in editor
 - [ ] Interactable component for entities in editor
 - [ ] Animated sprite render component in editor
