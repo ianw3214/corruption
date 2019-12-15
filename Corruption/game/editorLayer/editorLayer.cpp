@@ -207,6 +207,8 @@ void EditorLayer::AddNewEntityToGame()
     Entity * entity = new Entity();
     entity->SetX(m_newEntityX);
     entity->SetY(m_newEntityY);
+    entity->SetSerializedX(m_newEntityX);
+    entity->SetSerializedY(m_newEntityY);
     if (m_entityRenderComp)
     {
         RenderComponent * renderComp = new RenderComponent(m_renderCompPath);
@@ -224,7 +226,8 @@ void EditorLayer::AddNewEntityToGame()
         entity->AddComponent(healthComp);
     }
 
-    Game::GetEntityLayer()->AddEntity(entity);
+    entity->MarkSerialized();
+    Game::GetEntityLayer()->AddEntity(entity, true);
 
     void ResetNewEntityProperties();
 }

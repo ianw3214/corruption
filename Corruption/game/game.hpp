@@ -19,6 +19,8 @@ public:
         s_entityLayer = Oasis::DynamicCast<EntityLayer>(AddLayer(new EntityLayer()));
         AddLayer(new EditorLayer());
         AddLayer(new DebugLayer());
+
+        s_mapLayer->LoadSectors();
     }
 private:
     static Oasis::Reference<EntityLayer> s_entityLayer;

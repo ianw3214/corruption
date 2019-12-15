@@ -36,8 +36,14 @@ class Entity
 public:
     inline void SetX(float x) { m_x = x;}
     inline void SetY(float y) { m_y = y;}
+    inline void SetSerializedX(float x) { m_serializedX = x; }
+    inline void SetSerializedY(float y) { m_serializedY = y; }
     inline float GetX() const { return m_x; }
     inline float GetY() const { return m_y; }
+    inline float GetSerializedX() const { return m_serializedX; }
+    inline float GetSerializedY() const { return m_serializedY; }
+    inline void MarkSerialized() { m_serialized = true; }
+    inline bool Serialized() const { return m_serialized; }
     inline bool ShouldRemove() const { return m_remove; }
 
     inline void Remove() { m_remove = true; }
@@ -64,6 +70,11 @@ private:
     // Let all entities have a position
     float m_x;
     float m_y;
+
+    // Serialization state
+    bool m_serialized = false;
+    float m_serializedX;
+    float m_serializedY;
 
     // Entity management
     bool m_remove = false;

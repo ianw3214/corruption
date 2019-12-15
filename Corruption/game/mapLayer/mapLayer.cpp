@@ -4,7 +4,9 @@
 #include <fstream>
 #include <cstring>
 
+#include "game/game.hpp"
 #include "game/entityLayer/camera.hpp"
+#include "game/entityLayer/entitySerializer.hpp"
 
 #include "util/timer.hpp"
 
@@ -22,6 +24,13 @@ MapSector::MapSector(int x, int y)
     if (file.is_open())
     {
         file.read((char*) m_tiles, sizeof(m_tiles));
+        unsigned int entity_count = 0;
+        file.read((char*) &entity_count, sizeof(unsigned int));
+        for (unsigned int i = 0; i < entity_count; ++i)
+        {
+            Entity * entity = EntitySerializer::ReadEntity(file);
+            Game::GetEntityLayer()->AddEntity(entity);
+        }
     }
     else
     {
@@ -48,6 +57,39 @@ void MapSector::SaveToFile()
     if (file.is_open())
     {
         file.write((const char*) m_tiles, sizeof(m_tiles));
+        // Also save entity data in the map
+        // TODO: Make the count saved in the file maybe so for loop doesn't run twice
+        unsigned int entity_count = 0;
+        for (Oasis::Reference<Entity> entity : Game::GetEntityLayer()->GetEntities())
+        {
+            // Only save if entity is serializable
+            if (entity->Serialized())
+            {
+                // Only serialize entities that are in the current sector
+                int sector_x = static_cast<int>(entity->GetSerializedX() / kSectorPixelWidth);
+                int sector_y = static_cast<int>(entity->GetSerializedY() / kSectorPixelHeight);
+                if (sector_x == m_x && sector_y == m_y)
+                {
+                    entity_count++;
+                }
+            }
+        }
+        file.write((const char*) &entity_count, sizeof(unsigned int));
+        // Save the actual entities now
+        for (Oasis::Reference<Entity> entity : Game::GetEntityLayer()->GetEntities())
+        {
+            // Only save if entity is serializable
+            if (entity->Serialized())
+            {
+                // Only serialize entities that are in the current sector
+                int sector_x = static_cast<int>(entity->GetSerializedX() / kSectorPixelWidth);
+                int sector_y = static_cast<int>(entity->GetSerializedY() / kSectorPixelHeight);
+                if (sector_x == m_x && sector_y == m_y)
+                {
+                    EntitySerializer::ExportEntity(entity, file);
+                }
+            }
+        }
     }
     else
     {
@@ -142,15 +184,6 @@ void MapLayer::Init()
     m_sprite.SetSourcePos(0., 0.);
     m_sprite.SetDimensions(kTileSize, kTileSize);
 
-    // Initialize some sectors
-    for (int x = 0; x < kMapWidth; ++x)
-    {
-        for (int y = 0; y < kMapHeight; ++y)
-        {
-            m_sectors.emplace_back(x, y);
-            m_dirtyFlags.emplace_back(false);
-        }
-    }
     if (!mapShader)
     {
         mapShader = new Shader("res/shaders/camera_vertex.glsl", "res/shaders/sprite_fragment.glsl");
@@ -186,6 +219,19 @@ void MapLayer::Update()
     }
 }
 
+// This is a hacky fix so that the game can be loaded before we load sectors
+// TODO: Remove this once proper loading system is in place
+void MapLayer::LoadSectors()
+{
+    for (int x = 0; x < kMapWidth; ++x)
+    {
+        for (int y = 0; y < kMapHeight; ++y)
+        {
+            m_sectors.emplace_back(x, y);
+            m_dirtyFlags.emplace_back(false);
+        }
+    }
+}
 
 void MapLayer::PutTile(int mouse_x, int mouse_y, int tile)
 {
@@ -197,7 +243,7 @@ void MapLayer::PutTile(int mouse_x, int mouse_y, int tile)
     if (sector_x >= 0 && sector_x < kMapWidth && sector_y >= 0 && sector_y < kMapHeight)
     {
         GetSectorAt(sector_x, sector_y).PutTile(x, y, tile);
-        m_dirtyFlags[sector_y * kMapWidth + sector_x] = true;
+        MarkSectorDirty(sector_x, sector_y);
     }
 }
 
@@ -212,6 +258,11 @@ void MapLayer::SaveMap()
             m_dirtyFlags[i] = false;
         }
     }
+}
+
+void MapLayer::MarkSectorDirty(int sector_x, int sector_y)
+{
+    m_dirtyFlags[sector_y * kMapWidth + sector_x] = true;
 }
 
 MapSector& MapLayer::GetSectorAt(int x, int y)

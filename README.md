@@ -29,7 +29,7 @@
 - [x] Implement health component serialization
 - [ ] Figure out how to implement serialization for interactables
 - [x] Export map (save to file)
-- [ ] Figure out how to save entities (most likely with map)
+- [x] Figure out how to save entities (most likely with map)
 - [ ] Figure out loading algorithm for entities
 
 ## EDITOR

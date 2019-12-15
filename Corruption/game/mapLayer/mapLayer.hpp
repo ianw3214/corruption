@@ -56,8 +56,11 @@ public:
     virtual bool HandleEvent(const Oasis::Event& event) override;
     virtual void Update()  override;
 
+    void LoadSectors();
+
     void PutTile(int mouse_x, int mouse_y, int tile);
     void SaveMap();
+    void MarkSectorDirty(int sector_x, int sector_y);
 
     MapSector& GetSectorAt(int x, int y);
 private:

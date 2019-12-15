@@ -3,14 +3,16 @@
 #include <chrono>
 #include <algorithm>
 
-#include "playerController.hpp"
-#include "camera.hpp"
-#include "entitySerializer.hpp"
+#include "game/game.hpp"
 
-#include "components/renderComponent.hpp"
-#include "components/collisionComponent.hpp"
-#include "components/interactableComponent.hpp"
-#include "components/healthComponent.hpp"
+#include "game/entityLayer/playerController.hpp"
+#include "game/entityLayer/camera.hpp"
+#include "game/entityLayer/entitySerializer.hpp"
+
+#include "game/entityLayer/components/renderComponent.hpp"
+#include "game/entityLayer/components/collisionComponent.hpp"
+#include "game/entityLayer/components/interactableComponent.hpp"
+#include "game/entityLayer/components/healthComponent.hpp"
 
 #include "systems/collision.hpp"
 
@@ -19,7 +21,6 @@
 void EntityLayer::Init() 
 {
     // TODO: Maybe put these in the systems folder
-    EntitySerializer::Init();
     InteractionManager::Init();
     Collision::Init(this);
     PlayerController::SetGame(this);
@@ -57,33 +58,7 @@ void EntityLayer::Init()
         entity->SetY(7000.f);
     }
 
-    {   // TEMPORARY ENTITY TESTING CODE
-        RenderComponent * renderComp = new RenderComponent("res/house.png");
-        CollisionComponent * collisionComp = new CollisionComponent(300, 200);
-        Oasis::Reference<Entity> entity = AddEntity(new Entity());
-        entity->AddComponent(renderComp);
-        entity->AddComponent(collisionComp);
-
-        entity->SetX(300.f);
-        entity->SetY(300.f);
-    }
-
-    {   // TEMPORARY ENTITY TESTING CODE
-        RenderComponent * renderComp = new RenderComponent("res/npc.png");
-        renderComp->SetDimensions(120, 120);
-        CollisionComponent * collisionComp = new CollisionComponent(120, 120);
-        InteractableComponent * interactComp = new InteractableComponent([](){
-            Oasis::Console::Print("TEST INTERACTION");
-        });
-        Oasis::Reference<Entity> entity = AddEntity(new Entity());
-        entity->AddComponent(renderComp);
-        entity->AddComponent(collisionComp);
-        entity->AddComponent(interactComp);
-
-        entity->SetX(400.f);
-        entity->SetY(100.f);
-    }
-
+    /*
     {   // TEMPORARY ENTITY TESTING CODE
         RenderComponent * renderComp = new RenderComponent("res/enemy.png");
         renderComp->SetDimensions(120, 120);
@@ -99,8 +74,8 @@ void EntityLayer::Init()
 
         EntitySerializer::ExportEntity(entity, "test.ent");
     }
-
     AddEntity(EntitySerializer::ReadEntity("test.ent"));
+    */
 }
 
 void EntityLayer::Close() 
@@ -168,8 +143,19 @@ Oasis::Reference<Entity> EntityLayer::AddPlayer(Entity * entity)
     return m_player;
 }
 
-Oasis::Reference<Entity> EntityLayer::AddEntity(Entity * entity)
+Oasis::Reference<Entity> EntityLayer::AddEntity(Entity * entity, bool markMapDirty)
 {
+    if (markMapDirty)
+    {
+        // Make sure to mark the map that the entity was placed in as dirty so it can be saved
+        int sector_x = static_cast<int>(entity->GetX() / kSectorPixelWidth);
+        int sector_y = static_cast<int>(entity->GetY() / kSectorPixelHeight);
+        Game::GetMapLayer()->MarkSectorDirty(sector_x, sector_y);
+    }
+
+	unsigned int i = m_entities.size();
+	Oasis::Console::Print(std::to_string(i));
+
     m_entities.emplace_back(entity);
     return m_entities.back();
 }
