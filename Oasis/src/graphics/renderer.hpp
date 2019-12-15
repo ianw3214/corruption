@@ -11,7 +11,9 @@ namespace Oasis
     {
     public:
         static void Init();
+
         static void Clear(Colour colour);
+        static void UpdateDisplaySize();
 
         // TODO: Make a vec class for positions
         static void DrawLine(float x1, float y1, float x2, float y2, const Colour& colour);

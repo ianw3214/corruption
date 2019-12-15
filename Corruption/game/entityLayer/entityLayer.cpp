@@ -154,7 +154,6 @@ Oasis::Reference<Entity> EntityLayer::AddEntity(Entity * entity, bool markMapDir
     }
 
 	unsigned int i = m_entities.size();
-	Oasis::Console::Print(std::to_string(i));
 
     m_entities.emplace_back(entity);
     return m_entities.back();

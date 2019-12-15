@@ -13,6 +13,8 @@ namespace Oasis
         static void Init();
         static void Shutdown();
 
+        static void UpdateDisplaySize();
+
         static void AddWindowFunction(std::function<void()> func);
 
         static void OnEvent(const Event& event);

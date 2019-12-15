@@ -31,6 +31,15 @@ void InputManager::Update()
             s_eventCallback(WindowCloseEvent);
         }
 
+        if (e.type == SDL_WINDOWEVENT)
+        {
+            if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+            {
+                WindowSizeChangedEvent windowSizeChangedEvent(e.window.data1, e.window.data2);
+                s_eventCallback(windowSizeChangedEvent);
+            }
+        }
+
         if (e.type == SDL_KEYDOWN)
         {
             KeyPressedEvent keyEvent(e.key.keysym.scancode);

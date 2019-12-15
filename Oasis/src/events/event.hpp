@@ -12,6 +12,7 @@ namespace Oasis
 
         // WINDOW EVENTS
         WINDOW_CLOSE,
+        WINDOW_SIZE_CHANGED,
 
         // KEY EVENTS
         KEY_PRESSED,

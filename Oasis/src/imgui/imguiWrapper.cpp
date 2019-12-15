@@ -70,6 +70,12 @@ void ImGuiWrapper::Shutdown()
     
 }
 
+void ImGuiWrapper::UpdateDisplaySize()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    io.DisplaySize = ImVec2(static_cast<float>(WindowService::WindowWidth()), static_cast<float>(WindowService::WindowHeight()));
+}
+
 void ImGuiWrapper::AddWindowFunction(std::function<void()> func)
 {
     s_windowFunctions.push_back(func);

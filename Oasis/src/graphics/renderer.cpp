@@ -21,7 +21,18 @@ Shader * spriteShader;
 
 void Renderer::Init()
 {
-    basicShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_fragment.glsl");
+    UpdateDisplaySize();
+}
+
+void Renderer::Clear(Colour colour)
+{
+    glClearColor(colour.r, colour.g, colour.b, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Renderer::UpdateDisplaySize()
+{
+	basicShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/basic_fragment.glsl");
 	basicShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
     basicShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
 
@@ -32,12 +43,6 @@ void Renderer::Init()
 	spriteShader = new Shader("res/shaders/basic_vertex.glsl", "res/shaders/sprite_fragment.glsl");
 	spriteShader->setUniform1f("u_screenWidth", static_cast<float>(WindowService::WindowWidth()));
     spriteShader->setUniform1f("u_screenHeight", static_cast<float>(WindowService::WindowHeight()));
-}
-
-void Renderer::Clear(Colour colour)
-{
-    glClearColor(colour.r, colour.g, colour.b, 1.f);
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 // TODO: Move this somewhere else

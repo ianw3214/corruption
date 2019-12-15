@@ -21,6 +21,7 @@ using namespace Oasis;
 
 #include "events/inputManager.hpp"
 #include "events/event.hpp"
+#include "events/windowEvent.hpp"
 
 #include "imgui/imguiWrapper.hpp"
 #include "imgui/imgui_impl_opengl3.h"
@@ -88,6 +89,15 @@ void Application::OnEvent(const Event& event)
     if (event.GetType() == Oasis::EventType::WINDOW_CLOSE)
     {
         m_running = false;
+    }
+    if (event.GetType() == Oasis::EventType::WINDOW_SIZE_CHANGED)
+    {
+        const WindowSizeChangedEvent & windowEvent = dynamic_cast<const WindowSizeChangedEvent&>(event);
+        m_width = windowEvent.GetWidth();
+        m_height = windowEvent.GetHeight();
+        glViewport(0, 0, m_width, m_height);
+        ImGuiWrapper::UpdateDisplaySize();
+        Renderer::UpdateDisplaySize();
     }
     ImGuiWrapper::OnEvent(event);
     // TODO: This can probably be put into the ImGuiWrapper
