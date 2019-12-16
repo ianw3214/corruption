@@ -20,7 +20,8 @@ namespace fs = std::filesystem;
 
 void EditorLayer::Init()
 {
-    m_editorMode = false;
+    m_inEditor = false;
+    m_editorMode = EditorMode::TILE;
     m_currTile = 0;
     m_newEntityWindow = false;
 
@@ -46,7 +47,19 @@ void EditorLayer::Init()
         }
         ImGui::EndMenuBar();
 
-        ImGui::Checkbox("Editor Mode", &m_editorMode);
+        ImGui::Checkbox("Use Editor", &m_inEditor);
+        if (ImGui::TreeNode("Editor mode"))
+        {
+            if (ImGui::Selectable("Tile mode", m_editorMode == EditorMode::TILE))
+            {
+                m_editorMode = EditorMode::TILE;
+            }
+            if (ImGui::Selectable("Entity mode", m_editorMode == EditorMode::ENTITY))
+            {
+                m_editorMode = EditorMode::ENTITY;
+            }
+            ImGui::TreePop();
+        }
         ImGui::SliderInt("TILE", &m_currTile, 0, kTilesheetWidth * kTilesheetHeight);
         ImGui::End();   
     });
@@ -80,18 +93,25 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
         const Oasis::KeyPressedEvent& keyEvent = dynamic_cast<const Oasis::KeyPressedEvent&>(event);
         if (keyEvent.GetKey() == SDL_SCANCODE_T)
         {
-            m_editorMode = !m_editorMode;
+            m_inEditor = !m_inEditor;
             return true;
         }
     }
     if (event.GetType() == Oasis::EventType::MOUSE_PRESS)
     {
         const Oasis::MousePressedEvent& mouseEvent = dynamic_cast<const Oasis::MousePressedEvent&>(event);
-        if (m_editorMode)
+        if (m_inEditor)
         {
-            Oasis::Reference<MapLayer> map = Game::GetMapLayer();
-            map->PutTile(mouseEvent.GetX(), Oasis::WindowService::WindowHeight() - mouseEvent.GetY(), m_currTile);
-            return true;
+            if (m_editorMode == EditorMode::TILE)
+            {
+                Oasis::Reference<MapLayer> map = Game::GetMapLayer();
+                map->PutTile(mouseEvent.GetX(), Oasis::WindowService::WindowHeight() - mouseEvent.GetY(), m_currTile);
+                return true;   
+            }
+            if (m_editorMode == EditorMode::ENTITY)
+            {
+
+            }
         }
     }
     return false;

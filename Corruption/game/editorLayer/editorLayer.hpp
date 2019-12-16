@@ -6,6 +6,13 @@ constexpr char * kBaseTextureResourceDirectory = "res";
 class Entity;
 
 ////////////////////////////////////////////////////////////////////////////////////////
+enum class EditorMode
+{
+    TILE = 0,
+    ENTITY,
+    COUNT
+};
+
 class EditorLayer : public Oasis::GameStateLayer
 {
 public:
@@ -20,11 +27,14 @@ private:
     void AddNewEntityToGame();
     void ResetNewEntityProperties();
 
-    bool m_editorMode;
+    bool m_inEditor;
 
     /////////////////////////////////////
     // EDITOR STATE
     /////////////////////////////////////
+    EditorMode m_editorMode;
+    // The entity selected when in editor mode
+    Oasis::Reference<Entity> m_selectedEntity;
     // The tile that the 'brush' is currently using
     int m_currTile;
     // Show the window to create a new entity
