@@ -130,7 +130,7 @@ static void UpdateInputStates()
 
     io.MouseDown[0] = InputManager::MouseHeld();
 
-    if ((io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) == 0)
+    if (io.WantCaptureMouse)
     {
         ImGuiMouseCursor imgui_cursor = ImGui::GetMouseCursor();
         if (io.MouseDrawCursor || imgui_cursor == ImGuiMouseCursor_None)
@@ -145,6 +145,11 @@ static void UpdateInputStates()
             SDL_ShowCursor(SDL_TRUE);
         }
     }
+    else
+    {
+        SDL_ShowCursor(SDL_FALSE);
+    }
+    
 }
 
 void ImGuiWrapper::Update(float deltaTime)

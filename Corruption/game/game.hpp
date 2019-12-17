@@ -2,6 +2,7 @@
 
 #include "mapLayer/mapLayer.hpp"
 #include "entityLayer/entityLayer.hpp"
+#include "UILayer/UILayer.hpp"
 #include "debugLayer/debugLayer.hpp"
 #include "editorLayer/editorLayer.hpp"
 
@@ -17,6 +18,7 @@ public:
         // Layers are added bottom -> top
         s_mapLayer = Oasis::DynamicCast<MapLayer>(AddLayer(new MapLayer()));
         s_entityLayer = Oasis::DynamicCast<EntityLayer>(AddLayer(new EntityLayer()));
+        AddLayer(new UILayer());
         AddLayer(new EditorLayer());
         AddLayer(new DebugLayer());
 

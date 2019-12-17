@@ -4,5 +4,6 @@ target_sources(Corruption PRIVATE game.cpp)
 
 add_subdirectory(mapLayer)
 add_subdirectory(entityLayer)
+add_subdirectory(UILayer)
 add_subdirectory(debugLayer)
 add_subdirectory(editorLayer)
