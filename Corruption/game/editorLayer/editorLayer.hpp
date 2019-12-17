@@ -8,9 +8,8 @@ class Entity;
 ////////////////////////////////////////////////////////////////////////////////////////
 enum class EditorMode
 {
-    TILE = 0,
+    TILE,
     ENTITY,
-    COUNT
 };
 
 class EditorLayer : public Oasis::GameStateLayer

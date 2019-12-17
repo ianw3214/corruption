@@ -57,25 +57,6 @@ void EntityLayer::Init()
         entity->SetX(7000.f);
         entity->SetY(7000.f);
     }
-
-    /*
-    {   // TEMPORARY ENTITY TESTING CODE
-        RenderComponent * renderComp = new RenderComponent("res/enemy.png");
-        renderComp->SetDimensions(120, 120);
-        CollisionComponent * collisionComp = new CollisionComponent(120, 120);
-        HealthComponent * healthComp = new HealthComponent();
-        Oasis::Reference<Entity> entity = AddEntity(new Entity());
-        entity->AddComponent(renderComp);
-        entity->AddComponent(collisionComp);
-        entity->AddComponent(healthComp);
-
-        entity->SetX(50.f);
-        entity->SetY(400.f);
-
-        EntitySerializer::ExportEntity(entity, "test.ent");
-    }
-    AddEntity(EntitySerializer::ReadEntity("test.ent"));
-    */
 }
 
 void EntityLayer::Close() 

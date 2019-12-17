@@ -48,7 +48,10 @@ void EditorLayer::Init()
         ImGui::EndMenuBar();
 
         ImGui::Checkbox("Use Editor", &m_inEditor);
-        if (ImGui::TreeNode("Editor mode"))
+        const char * editorModeText = "";
+        if (m_editorMode == EditorMode::TILE) editorModeText = "Editor Mode (tile)";
+        if (m_editorMode == EditorMode::ENTITY) editorModeText = "Editor Mode (entity)";
+        if (ImGui::TreeNode(editorModeText))
         {
             if (ImGui::Selectable("Tile mode", m_editorMode == EditorMode::TILE))
             {
@@ -95,6 +98,20 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
         {
             m_inEditor = !m_inEditor;
             return true;
+        }
+        if (keyEvent.GetKey() == SDL_SCANCODE_1)
+        {
+            if (m_inEditor)
+            {
+                m_editorMode = EditorMode::TILE;
+            }
+        }
+        if (keyEvent.GetKey() == SDL_SCANCODE_2)
+        {
+            if (m_inEditor)
+            {
+                m_editorMode = EditorMode::ENTITY;
+            }
         }
     }
     if (event.GetType() == Oasis::EventType::MOUSE_PRESS)
