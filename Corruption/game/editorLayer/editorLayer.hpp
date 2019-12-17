@@ -47,6 +47,9 @@ private:
     bool m_entityCollisionComp;
     int m_collisionCompWidth;
     int m_collisionCompHeight;
+    int m_collisionCompOffsetX;
+    int m_collisionCompOffsetY;
+    bool m_collisionPassable;
     bool m_entityHealthComp;
     int m_healthCompHealth;
     std::string m_renderCompPath;

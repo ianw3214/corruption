@@ -46,8 +46,8 @@ void DebugLayer::Update()
         {
             if (Oasis::Reference<CollisionComponent> col = entity->GetComponent<CollisionComponent>())
             {
-                float x = entity->GetX() - Camera::GetX();
-                float y = entity->GetY() - Camera::GetY();
+                float x = entity->GetX() - Camera::GetX() + col->GetOffsetX();
+                float y = entity->GetY() - Camera::GetY() + col->GetOffsetY();
                 float w = static_cast<float>(col->GetWidth());
                 float h = static_cast<float>(col->GetHeight());
                 Oasis::Renderer::DrawLine(x, y, x, y + h, Oasis::Colours::WHITE);

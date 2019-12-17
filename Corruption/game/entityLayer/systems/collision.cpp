@@ -15,8 +15,8 @@ Oasis::Reference<Entity> Collision::Colliding(Oasis::Reference<Entity> entity)
 {
     // Make sure the entity has a collision component
     auto collision = entity->GetComponent<CollisionComponent>();
-    float x = entity->GetX();
-    float y = entity->GetY();
+    float x = entity->GetX() + static_cast<float>(collision->GetOffsetX());
+    float y = entity->GetY() + static_cast<float>(collision->GetOffsetY());
     int w = collision->GetWidth();
     int h = collision->GetHeight();
 
@@ -29,8 +29,8 @@ Oasis::Reference<Entity> Collision::Colliding(Oasis::Reference<Entity> entity)
         if (auto col = ent->GetComponent<CollisionComponent>())
         {
             if (col->Passable()) continue;
-            float x2 = ent->GetX();
-            float y2 = ent->GetY();
+            float x2 = ent->GetX() + static_cast<float>(col->GetOffsetX());
+            float y2 = ent->GetY() + static_cast<float>(col->GetOffsetY());
             int w2 = col->GetWidth();
             int h2 = col->GetHeight();
             if (x < x2 + w2 && x + w > x2)

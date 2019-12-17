@@ -177,8 +177,8 @@ void EditorLayer::Update()
         }
         if (m_entityCollisionComp)
         {
-            float x = m_newEntityX - Camera::GetX();
-            float y = m_newEntityY - Camera::GetY();
+            float x = m_newEntityX - Camera::GetX() + static_cast<float>(m_collisionCompOffsetX);
+            float y = m_newEntityY - Camera::GetY() + static_cast<float>(m_collisionCompOffsetY);
             float w = static_cast<float>(m_collisionCompWidth);
             float h = static_cast<float>(m_collisionCompHeight);
             Oasis::Renderer::DrawLine(x, y, x, y + h, Oasis::Colour{1.f, .5f, 0.f});
@@ -235,6 +235,9 @@ void EditorLayer::NewEntityWindowFunc()
     {
         ImGui::SliderInt("collision width", &m_collisionCompWidth, 0, 500);
         ImGui::SliderInt("collision height", &m_collisionCompHeight, 0, 500);
+        ImGui::SliderInt("collision offset x", &m_collisionCompOffsetX, 0, 200);
+        ImGui::SliderInt("collision offset y", &m_collisionCompOffsetY, 0, 200);
+        ImGui::Checkbox("collision passable", &m_collisionPassable);
     }
     ImGui::Checkbox("Health Component", &m_entityHealthComp);
     if (m_entityHealthComp)
@@ -315,7 +318,12 @@ void EditorLayer::AddNewEntityToGame()
     }
     if (m_entityCollisionComp)
     {
-        CollisionComponent * collisionComp = new CollisionComponent(m_collisionCompWidth, m_collisionCompHeight);
+        CollisionComponent * collisionComp = new CollisionComponent(
+            m_collisionCompWidth, 
+            m_collisionCompHeight, 
+            m_collisionCompOffsetX, 
+            m_collisionCompOffsetY, 
+            m_collisionPassable);
         entity->AddComponent(collisionComp);
     }
     if (m_entityHealthComp)
@@ -341,6 +349,8 @@ void EditorLayer::ResetNewEntityProperties()
     m_entityCollisionComp = false;
     m_collisionCompWidth = 0;
     m_collisionCompHeight = 0;
+    m_collisionCompOffsetX = 0;
+    m_collisionCompOffsetY = 0;
     m_entityHealthComp = false;
     m_healthCompHealth = 0;
 }

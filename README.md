@@ -54,6 +54,7 @@
 - [x] NPCs (interactable component)
 - [ ] Dialogue system
 - [ ] Sprite render at offset from position
+- [x] Collision offset from position
 - [ ] Camera System Based on where player is looking
 - [x] Only allow one movement direction at a time (diagonal movement looks weird)
 - [x] Health component
