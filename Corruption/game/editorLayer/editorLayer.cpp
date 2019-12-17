@@ -104,13 +104,39 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
         {
             if (m_editorMode == EditorMode::TILE)
             {
+                // TODO: Should probably handle camera positions here
                 Oasis::Reference<MapLayer> map = Game::GetMapLayer();
                 map->PutTile(mouseEvent.GetX(), Oasis::WindowService::WindowHeight() - mouseEvent.GetY(), m_currTile);
                 return true;   
             }
             if (m_editorMode == EditorMode::ENTITY)
             {
-
+                // Get the entity at the clicked position
+                for (Oasis::Reference<Entity> entity : Game::GetEntityLayer()->GetEntities())
+                {
+                    // Only allow serializable entities to be selected
+                    if (!entity->Serialized())
+                    {
+                        continue;
+                    }
+                    if (auto col = entity->GetComponent<CollisionComponent>())
+                    {
+                        float x = entity->GetX();
+                        float y = entity->GetY();
+                        float w = static_cast<float>(col->GetWidth());
+                        float h = static_cast<float>(col->GetHeight());
+                        float mouse_x = static_cast<float>(mouseEvent.GetX()) + Camera::GetX();
+                        float mouse_y = static_cast<float>(Oasis::WindowService::WindowHeight() - mouseEvent.GetY()) + Camera::GetY();
+                        if (x <= mouse_x && x + w >= mouse_x)
+                        {
+                            if (y <= mouse_y && y + h >= mouse_y)
+                            {
+                                m_selectedEntity = entity;
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -142,6 +168,30 @@ void EditorLayer::Update()
             Oasis::Renderer::DrawLine(x, y, x + w, y, Oasis::Colour{1.f, .5f, 0.f});
             Oasis::Renderer::DrawLine(x + w, y, x + w, y + h, Oasis::Colour{1.f, .5f, 0.f});
             Oasis::Renderer::DrawLine(x, y + h, x + w, y + h, Oasis::Colour{1.f, .5f, 0.f});
+        }
+    }
+    if (m_inEditor)
+    {
+        if (m_selectedEntity)
+        {
+            float x = m_selectedEntity->GetX() - Camera::GetX();
+            float y = m_selectedEntity->GetY() - Camera::GetY();
+            float w = 0.f;
+            float h = 0.f;
+            if (auto renderComp = m_selectedEntity->GetComponent<RenderComponent>())
+            {
+                w = renderComp->GetWidth();
+                h = renderComp->GetHeight();
+            }
+            else if (auto collisionComp = m_selectedEntity->GetComponent<CollisionComponent>())
+            {
+                w = static_cast<float>(collisionComp->GetWidth());
+                h = static_cast<float>(collisionComp->GetHeight());
+            }
+            Oasis::Renderer::DrawLine(x, y, x, y + h, Oasis::Colour{0.f, .9f, 1.f});
+            Oasis::Renderer::DrawLine(x, y, x + w, y, Oasis::Colour{0.f, .9f, 1.f});
+            Oasis::Renderer::DrawLine(x + w, y, x + w, y + h, Oasis::Colour{0.f, .9f, 1.f});
+            Oasis::Renderer::DrawLine(x, y + h, x + w, y + h, Oasis::Colour{0.f, .9f, 1.f});
         }
     }
 }

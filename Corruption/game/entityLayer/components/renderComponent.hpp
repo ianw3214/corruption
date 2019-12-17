@@ -17,6 +17,8 @@ public:
     
     RenderComponent();
     RenderComponent(const std::string& path, SpriteType type = SpriteType::NORMAL);
+    inline float GetWidth() const { return m_width; }
+    inline float GetHeight() const { return m_height; }
 
     virtual void Read(std::ifstream& file) override;
     virtual void Write(std::ofstream& file) override;
