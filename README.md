@@ -35,8 +35,8 @@
 ## EDITOR
 
 - [x] Map tile editing
-- [ ] Better tile display in editor
-- [ ] Better tile palette in editor
+- [x] Better tile display in editor
+- [x] Better tile palette in editor
 - [ ] Display entity info in editor
 - [x] Select entities in editor
 - [ ] Drag/drop entities in editor
@@ -99,3 +99,4 @@
 - [x] ImGui mouse capture
 - [ ] mouse y is 'inverted'?
 - [ ] Empty interactable component is added to manager because of serialization registration
+- [ ] Better cursor orientation (should point to top left)

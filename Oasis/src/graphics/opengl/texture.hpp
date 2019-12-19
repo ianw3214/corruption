@@ -21,6 +21,7 @@ namespace Oasis
 		void unbind() const;
 
 		void SetData(void* data, uint32_t size, GLenum format = GL_RGBA);
+		GLuint GetID() const { return textureID; }
 
 		inline int getWidth() const { return width; }
 		inline int getHeight() const { return height; }
