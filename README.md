@@ -37,7 +37,8 @@
 - [x] Map tile editing
 - [x] Better tile display in editor
 - [x] Better tile palette in editor
-- [ ] Display entity info in editor
+- [x] Display entity info in editor
+- [ ] Display entity components in editor
 - [x] Select entities in editor
 - [ ] Drag/drop entities in editor
 - [ ] Delete entities in editor

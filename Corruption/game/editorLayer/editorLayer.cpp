@@ -127,6 +127,23 @@ void EditorLayer::Init()
             ImGui::End();
         }
     });
+    Oasis::ImGuiWrapper::AddWindowFunction([=](){
+        // Show entity info if it is being displayed
+        if (m_inEditor && m_editorMode == EditorMode::ENTITY)
+        {
+            ImGui::Begin("Entity Info", nullptr, ImGuiWindowFlags_MenuBar);
+            if (m_selectedEntity)
+            {
+                ImGui::Text("position: (%.2f, %.2f)", m_selectedEntity->GetSerializedX(), m_selectedEntity->GetSerializedY());
+            }
+            else
+            {
+                ImGui::Text("No entity selected...");
+            }
+            
+            ImGui::End();
+        }
+    });
 }
 
 void EditorLayer::Close()
@@ -189,10 +206,11 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
                         float h = static_cast<float>(col->GetHeight());
                         float mouse_x = static_cast<float>(mouseEvent.GetX()) + Camera::GetX();
                         float mouse_y = static_cast<float>(Oasis::WindowService::WindowHeight() - mouseEvent.GetY()) + Camera::GetY();
-                        if (x <= mouse_x && x + w >= mouse_x)
+                        if (mouse_x >= x && mouse_x <= x + w)
                         {
-                            if (y <= mouse_y && y + h >= mouse_y)
+                            if (mouse_y >= y && mouse_y <= y + h)
                             {
+								Oasis::Console::Print("Hello???");
                                 m_selectedEntity = entity;
                                 return true;
                             }
