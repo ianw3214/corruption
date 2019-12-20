@@ -100,4 +100,4 @@
 - [x] ImGui mouse capture
 - [ ] mouse y is 'inverted'?
 - [ ] Empty interactable component is added to manager because of serialization registration
-- [ ] Better cursor orientation (should point to top left)
+- [x] Better cursor orientation (should point to top left)

@@ -200,8 +200,8 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
                     }
                     if (auto col = entity->GetComponent<CollisionComponent>())
                     {
-                        float x = entity->GetX();
-                        float y = entity->GetY();
+                        float x = entity->GetX() + col->GetOffsetX();
+                        float y = entity->GetY() + col->GetOffsetY();
                         float w = static_cast<float>(col->GetWidth());
                         float h = static_cast<float>(col->GetHeight());
                         float mouse_x = static_cast<float>(mouseEvent.GetX()) + Camera::GetX();
@@ -210,7 +210,6 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
                         {
                             if (mouse_y >= y && mouse_y <= y + h)
                             {
-								Oasis::Console::Print("Hello???");
                                 m_selectedEntity = entity;
                                 return true;
                             }

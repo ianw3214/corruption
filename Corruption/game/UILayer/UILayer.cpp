@@ -19,7 +19,10 @@ bool UILayer::HandleEvent(const Oasis::Event& event)
     if (event.GetType() == Oasis::EventType::MOUSE_MOVE)
     {
         const Oasis::MouseMovedEvent& mouseEvent = dynamic_cast<const Oasis::MouseMovedEvent&>(event);
-        sprite.SetPos(mouseEvent.GetX(), Oasis::WindowService::WindowHeight() - mouseEvent.GetY());
+        sprite.SetPos(
+            static_cast<float>(mouseEvent.GetX()), 
+            static_cast<float>(Oasis::WindowService::WindowHeight() - mouseEvent.GetY()) - sprite.GetHeight()
+        );
     }
     return false;
 }
