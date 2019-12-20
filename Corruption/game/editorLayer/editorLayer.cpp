@@ -21,6 +21,7 @@ namespace fs = std::filesystem;
 void EditorLayer::Init()
 {
     m_inEditor = false;
+    m_movingEntity = false;
     m_editorMode = EditorMode::TILE;
     m_currTile = 0;
     m_newEntityWindow = false;
@@ -168,9 +169,15 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
                         float h = static_cast<float>(col->GetHeight());
                         float mouse_x = static_cast<float>(mouseEvent.GetX()) + Camera::GetX();
                         float mouse_y = static_cast<float>(Oasis::WindowService::WindowHeight() - mouseEvent.GetY()) + Camera::GetY();
-                        if (mouse_x >= x && mouse_x <= x + w)
+                        if (mouse_x >= x && mouse_x <= x + w && mouse_y >= y && mouse_y <= y + h)
                         {
-                            if (mouse_y >= y && mouse_y <= y + h)
+                            // If the selected entity was already this entity, start moving it
+                            if (m_selectedEntity == entity)
+                            {
+                                m_movingEntity = true;
+                                return true;
+                            }
+                            else
                             {
                                 m_selectedEntity = entity;
                                 return true;
@@ -179,6 +186,28 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
                     }
                 }
             }
+        }
+    }
+    if (event.GetType() == Oasis::EventType::MOUSE_RELEASE)
+    {
+        m_movingEntity = false;
+    }
+    if (event.GetType() == Oasis::EventType::MOUSE_MOVE)
+    {
+        if (m_movingEntity && m_selectedEntity)
+        {
+            const Oasis::MouseMovedEvent& mouseEvent = dynamic_cast<const Oasis::MouseMovedEvent&>(event);
+            float x = m_selectedEntity->GetSerializedX() + static_cast<float>(mouseEvent.GetXOffset());
+            float y = m_selectedEntity->GetSerializedY() - static_cast<float>(mouseEvent.GetYOffset());
+            m_selectedEntity->SetSerializedX(x);
+            m_selectedEntity->SetSerializedY(y);
+            // Also set actual X/Y so updates in game as well
+            m_selectedEntity->SetX(x);
+            m_selectedEntity->SetY(y);
+            // Mark the map as dirty as well
+            int sector_x = static_cast<int>(x / kSectorPixelWidth);
+            int sector_y = static_cast<int>(y / kSectorPixelHeight);
+            Game::GetMapLayer()->MarkSectorDirty(sector_x, sector_y);
         }
     }
     return false;

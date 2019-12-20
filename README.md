@@ -40,8 +40,8 @@
 - [x] Display entity info in editor
 - [ ] Display entity components in editor
 - [x] Select entities in editor
-- [ ] Drag/drop entities in editor
-- [ ] Delete entities in editor
+- [x] Drag/drop entities in editor
+- [x] Delete entities in editor
 - [x] Add new entities in editor (started)
 - [x] Collision component for entities in editor
 - [x] Health component for entities in editor
@@ -101,3 +101,4 @@
 - [ ] mouse y is 'inverted'?
 - [ ] Empty interactable component is added to manager because of serialization registration
 - [x] Better cursor orientation (should point to top left)
+- [ ] Put code marking map as dirty in central location

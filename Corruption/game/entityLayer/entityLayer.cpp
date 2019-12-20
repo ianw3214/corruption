@@ -129,8 +129,8 @@ Oasis::Reference<Entity> EntityLayer::AddEntity(Entity * entity, bool markMapDir
     if (markMapDirty)
     {
         // Make sure to mark the map that the entity was placed in as dirty so it can be saved
-        int sector_x = static_cast<int>(entity->GetX() / kSectorPixelWidth);
-        int sector_y = static_cast<int>(entity->GetY() / kSectorPixelHeight);
+        int sector_x = static_cast<int>(entity->GetSerializedX() / kSectorPixelWidth);
+        int sector_y = static_cast<int>(entity->GetSerializedY() / kSectorPixelHeight);
         Game::GetMapLayer()->MarkSectorDirty(sector_x, sector_y);
     }
 
@@ -143,8 +143,8 @@ bool EntityLayer::DeleteEntity(Oasis::Reference<Entity> entity, bool markMapDirt
     if (markMapDirty)
     {
         // Make sure to mark the map that the entity was placed in as dirty so it can be saved
-        int sector_x = static_cast<int>(entity->GetX() / kSectorPixelWidth);
-        int sector_y = static_cast<int>(entity->GetY() / kSectorPixelHeight);
+        int sector_x = static_cast<int>(entity->GetSerializedX() / kSectorPixelWidth);
+        int sector_y = static_cast<int>(entity->GetSerializedY() / kSectorPixelHeight);
         Game::GetMapLayer()->MarkSectorDirty(sector_x, sector_y);
     }
     auto it = m_entities.begin();

@@ -32,6 +32,7 @@ private:
     // EDITOR STATE
     /////////////////////////////////////
     EditorMode m_editorMode;
+    bool m_movingEntity;
     // The entity selected when in editor mode
     Oasis::Reference<Entity> m_selectedEntity;
     // The tile that the 'brush' is currently using
