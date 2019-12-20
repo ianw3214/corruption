@@ -59,4 +59,9 @@ private:
     /////////////////////////////////////
     bool m_showingFileBrowser;
     std::string m_currentPath;
+
+    //////////////////////////////////////
+    // IMGUi HELPER FUNCTIONS
+    //////////////////////////////////////
+    void ImGuiRenderTilemap();
 };

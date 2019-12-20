@@ -63,54 +63,11 @@ void EditorLayer::Init()
             }
             ImGui::TreePop();
         }
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1.f, 1.f));
-
-        Oasis::Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/tiles/basic.png");
-        GLuint textureId = texture->GetID();
-        ImVec2 buttonSize(60, 60);
-        float windowVisible = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
-        ImGuiStyle& style = ImGui::GetStyle();
-        const int numButtons = kTilesheetWidth * kTilesheetHeight;
-        for (unsigned int i = 0; i < numButtons; ++i)
-        {
-            ImGui::PushID(i);
-            ImVec2 uv0(0.f, 0.f);
-            ImVec2 uv1(1.f, 1.f);
-            {   // Calculate texture positions
-                static const float width = static_cast<float>(kTileSourceSize) / static_cast<float>(texture->getWidth());
-                static const float height = static_cast<float>(kTileSourceSize) / static_cast<float>(texture->getHeight());
-                int x = i % kTilesheetWidth;
-                int y = i / kTilesheetWidth;
-                uv0.x = x * width;
-                uv0.y = 1.f - y * height;
-                uv1.x = (x + 1) * width;
-                uv1.y = 1.f - (y + 1) * height;
-            }
-            // Determine if tint is needed based on whether tile is selected
-            ImVec4 tint(1.f, 1.f, 1.f, 1.f);
-            if (i == m_currTile)
-            {
-                tint = ImVec4(1.f, 1.f, 1.f, .3f);
-            }
-            // Render the actual button
-            if (ImGui::ImageButton((void*) textureId, buttonSize, uv0, uv1, 0, ImVec4(), tint))
-            {
-                m_currTile = i;
-            }
-            // Check projected position to see if we should advance to a new line
-            float lastButtonX2 = ImGui::GetItemRectMax().x;
-            float nextButtonX2 = lastButtonX2 + style.ItemSpacing.x + buttonSize.x;
-            if (i + 1 < numButtons && nextButtonX2 < windowVisible)
-            {
-                ImGui::SameLine();
-            }
-            ImGui::PopID();
-        }
-
-        ImGui::PopStyleVar(1);
+        ImGuiRenderTilemap();
 
         ImGui::End();   
     });
+    // Window for creating a new entity
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
         if (m_showingFileBrowser || m_newEntityWindow)
         {
@@ -127,8 +84,8 @@ void EditorLayer::Init()
             ImGui::End();
         }
     });
+    // Show entity info if we are in entity mode
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
-        // Show entity info if it is being displayed
         if (m_inEditor && m_editorMode == EditorMode::ENTITY)
         {
             ImGui::Begin("Entity Info", nullptr, ImGuiWindowFlags_MenuBar);
@@ -415,4 +372,53 @@ void EditorLayer::ResetNewEntityProperties()
     m_collisionCompOffsetY = 0;
     m_entityHealthComp = false;
     m_healthCompHealth = 0;
+}
+
+void EditorLayer::ImGuiRenderTilemap()
+{
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1.f, 1.f));
+
+    Oasis::Reference<Oasis::Texture> texture = Oasis::ResourceManager::GetResource<Oasis::Texture>("res/tiles/basic.png");
+    GLuint textureId = texture->GetID();
+    ImVec2 buttonSize(60, 60);
+    float windowVisible = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+    ImGuiStyle& style = ImGui::GetStyle();
+    const int numButtons = kTilesheetWidth * kTilesheetHeight;
+    for (unsigned int i = 0; i < numButtons; ++i)
+    {
+        ImGui::PushID(i);
+        ImVec2 uv0(0.f, 0.f);
+        ImVec2 uv1(1.f, 1.f);
+        {   // Calculate texture positions
+            static const float width = static_cast<float>(kTileSourceSize) / static_cast<float>(texture->getWidth());
+            static const float height = static_cast<float>(kTileSourceSize) / static_cast<float>(texture->getHeight());
+            int x = i % kTilesheetWidth;
+            int y = i / kTilesheetWidth;
+            uv0.x = x * width;
+            uv0.y = 1.f - y * height;
+            uv1.x = (x + 1) * width;
+            uv1.y = 1.f - (y + 1) * height;
+        }
+        // Determine if tint is needed based on whether tile is selected
+        ImVec4 tint(1.f, 1.f, 1.f, 1.f);
+        if (i == m_currTile)
+        {
+            tint = ImVec4(1.f, 1.f, 1.f, .3f);
+        }
+        // Render the actual button
+        if (ImGui::ImageButton((void*) textureId, buttonSize, uv0, uv1, 0, ImVec4(), tint))
+        {
+            m_currTile = i;
+        }
+        // Check projected position to see if we should advance to a new line
+        float lastButtonX2 = ImGui::GetItemRectMax().x;
+        float nextButtonX2 = lastButtonX2 + style.ItemSpacing.x + buttonSize.x;
+        if (i + 1 < numButtons && nextButtonX2 < windowVisible)
+        {
+            ImGui::SameLine();
+        }
+        ImGui::PopID();
+    }
+
+    ImGui::PopStyleVar(1);
 }
