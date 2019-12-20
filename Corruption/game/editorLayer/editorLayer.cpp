@@ -118,18 +118,23 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
             m_inEditor = !m_inEditor;
             return true;
         }
-        if (keyEvent.GetKey() == SDL_SCANCODE_1)
+        if (m_inEditor)
         {
-            if (m_inEditor)
+            if (keyEvent.GetKey() == SDL_SCANCODE_1)
             {
                 m_editorMode = EditorMode::TILE;
             }
-        }
-        if (keyEvent.GetKey() == SDL_SCANCODE_2)
-        {
-            if (m_inEditor)
+            if (keyEvent.GetKey() == SDL_SCANCODE_2)
             {
                 m_editorMode = EditorMode::ENTITY;
+            }
+            if (keyEvent.GetKey() == SDL_SCANCODE_DELETE || keyEvent.GetKey() == SDL_SCANCODE_BACKSPACE)
+            {
+                if (m_selectedEntity)
+                {
+                    Game::GetEntityLayer()->DeleteEntity(m_selectedEntity, true);
+                    m_selectedEntity = nullptr;
+                }
             }
         }
     }

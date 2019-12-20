@@ -45,6 +45,8 @@ namespace Oasis
             return m_data != nullptr;
         }
     private:
+        template<typename U>
+        friend class Reference;
         T * m_data;
     };
 
@@ -93,6 +95,10 @@ namespace Oasis
         }    
 
         bool operator==(const Reference<T>& other)
+        {
+            return m_data == other.m_data;
+        }
+        bool operator==(const Owned<T>& other)
         {
             return m_data == other.m_data;
         }

@@ -134,10 +134,33 @@ Oasis::Reference<Entity> EntityLayer::AddEntity(Entity * entity, bool markMapDir
         Game::GetMapLayer()->MarkSectorDirty(sector_x, sector_y);
     }
 
-	unsigned int i = m_entities.size();
-
     m_entities.emplace_back(entity);
     return m_entities.back();
+}
+
+bool EntityLayer::DeleteEntity(Oasis::Reference<Entity> entity, bool markMapDirty)
+{
+    if (markMapDirty)
+    {
+        // Make sure to mark the map that the entity was placed in as dirty so it can be saved
+        int sector_x = static_cast<int>(entity->GetX() / kSectorPixelWidth);
+        int sector_y = static_cast<int>(entity->GetY() / kSectorPixelHeight);
+        Game::GetMapLayer()->MarkSectorDirty(sector_x, sector_y);
+    }
+    auto it = m_entities.begin();
+    while (it != m_entities.end())
+    {
+        if (entity == (*it))
+        {
+            it = m_entities.erase(it);
+            return true;
+        }
+        else
+        {
+            it++;
+        }
+    }
+    return false;
 }
 
 std::vector<Oasis::Owned<Entity>>& EntityLayer::GetEntities()
