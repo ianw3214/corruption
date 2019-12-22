@@ -62,7 +62,7 @@
 - [ ] Basic AI (AI component)
 - [x] Player attack (Shoot projectile)
 - [ ] Remove projectiles after a while (can be just based off time)
-- [ ] Shoot projectiles based on CENTER of sprite, not edge
+- [x] Shoot projectiles based on CENTER of sprite, not edge
 - [ ] Game mode service to make the game globally accessibly
 - [ ] Collision masks (Ignore certain collisions like projectile-projectile collisions)
 - [x] Player attack animations

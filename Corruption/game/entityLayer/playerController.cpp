@@ -94,16 +94,20 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
     {
         if (s_attackCooldown <= 0.f)
         {
+            Oasis::Reference<RenderComponent> playerRender = s_player->GetComponent<RenderComponent>();
             const Oasis::MousePressedEvent& mouseEvent = dynamic_cast<const Oasis::MousePressedEvent&>(event);
             // Calculate the angle to shoot the projectile at
             float x_diff = s_player->GetX() - static_cast<float>(Camera::GetX() + mouseEvent.GetX());
             float y_diff = s_player->GetY() - static_cast<float>(Camera::GetY() + mouseEvent.GetY());
+            // Need to account width/height of the player and the projectile
+            x_diff += (playerRender->GetWidth() - kProjectileWidth) / 2.f;
+            y_diff -= (playerRender->GetHeight() - kProjectileHeight) / 2.f;
             float angle = std::atan2(y_diff, -x_diff);
             // Create a projectile entity on attack
             {   // TEMPORARY ENTITY TESTING CODE
                 RenderComponent * renderComp = new RenderComponent("res/attack.png");
-                renderComp->SetDimensions(60, 60);
-                CollisionComponent * collisionComp = new CollisionComponent(60, 60, true);
+                renderComp->SetDimensions(kProjectileWidth, kProjectileHeight);
+                CollisionComponent * collisionComp = new CollisionComponent((int) kProjectileWidth, (int) kProjectileHeight, true);
                 ProjectileComponent * projectileComp = new ProjectileComponent(angle);
                 Oasis::Reference<Entity> entity = s_game->AddEntity(new Entity());
                 entity->AddComponent(renderComp);
@@ -111,8 +115,8 @@ bool PlayerController::OnEvent(const Oasis::Event& event)
                 entity->AddComponent(projectileComp);
                 
                 // This is super hard coded to not collide with the player
-                entity->SetX(s_player->GetX() + std::cos(angle) * 140.f + 30.f);
-                entity->SetY(s_player->GetY() + std::sin(angle) * 140.f + 30.f);
+                entity->SetX(s_player->GetX() + std::cos(angle) * 140.f + kProjectileWidth / 2.f);
+                entity->SetY(s_player->GetY() + std::sin(angle) * 140.f + kProjectileHeight / 2.f);
             }
             // Figure out what animation to play depending on the angle
             {

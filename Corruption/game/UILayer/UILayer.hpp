@@ -11,5 +11,6 @@ public:
     virtual bool HandleEvent(const Oasis::Event& event) override;
     virtual void Update()  override;
 private:
-    Oasis::Sprite sprite;
+    Oasis::Sprite m_cursorSprite;
+    Oasis::Sprite m_targetSprite;
 };

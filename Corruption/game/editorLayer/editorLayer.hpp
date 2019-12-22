@@ -20,6 +20,8 @@ public:
 
     virtual bool HandleEvent(const Oasis::Event& event) override;
     virtual void Update()  override;
+
+    inline bool Active() const { return m_inEditor; }
 private:
     void NewEntityWindowFunc();
     void FileBrowserWindowFunc();

@@ -2,6 +2,8 @@
 #include "oasis.h"
 
 constexpr float kPlayerAttackCooldown = 0.4f;
+constexpr float kProjectileWidth = 60.f;
+constexpr float kProjectileHeight = 60.f;
 
 class Entity;
 class EntityLayer;
