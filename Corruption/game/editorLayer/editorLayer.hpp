@@ -25,6 +25,7 @@ public:
 private:
     void NewEntityWindowFunc();
     void FileBrowserWindowFunc();
+    void EntityInfoWindowFunc();
     void AddNewEntityToGame();
     void ResetNewEntityProperties();
 

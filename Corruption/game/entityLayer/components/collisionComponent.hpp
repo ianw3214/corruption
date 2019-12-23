@@ -30,4 +30,5 @@ private:
 
     // This flag determines if the collision blocks other collisions
     bool m_passable;
+    friend class EditorLayer;
 };

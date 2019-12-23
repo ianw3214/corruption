@@ -1,1 +1,4 @@
-target_sources(Corruption PRIVATE editorLayer.hpp editorLayer.cpp)
+target_sources(Corruption PRIVATE 
+    editorLayer.hpp 
+    editorLayer.cpp
+    editorLayerEntityInfo.cpp)

@@ -89,17 +89,7 @@ void EditorLayer::Init()
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
         if (m_inEditor && m_editorMode == EditorMode::ENTITY)
         {
-            ImGui::Begin("Entity Info", nullptr, ImGuiWindowFlags_MenuBar);
-            if (m_selectedEntity)
-            {
-                ImGui::Text("position: (%.2f, %.2f)", m_selectedEntity->GetSerializedX(), m_selectedEntity->GetSerializedY());
-            }
-            else
-            {
-                ImGui::Text("No entity selected...");
-            }
-            
-            ImGui::End();
+            EntityInfoWindowFunc();
         }
     });
 }

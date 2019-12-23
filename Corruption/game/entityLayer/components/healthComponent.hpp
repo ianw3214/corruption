@@ -20,4 +20,5 @@ public:
     // virtual void Update(float delta) override;
 private:
     int m_health;
+    friend class EditorLayer;
 };
