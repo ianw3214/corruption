@@ -30,6 +30,7 @@ void EditorLayer::Init()
 
     m_showingFileBrowser = false;
     m_currentPath = kBaseTextureResourceDirectory;
+    m_filePathTarget = nullptr;
 
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
         ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
@@ -70,18 +71,11 @@ void EditorLayer::Init()
     });
     // Window for creating a new entity
     Oasis::ImGuiWrapper::AddWindowFunction([=](){
-        if (m_showingFileBrowser || m_newEntityWindow)
+        if (m_newEntityWindow)
         {
             ImGui::SetCurrentContext(Oasis::ImGuiWrapper::GetContext());
             ImGui::Begin("NEW ENTITY", nullptr, ImGuiWindowFlags_MenuBar);
-            if (m_showingFileBrowser)
-            {
-                FileBrowserWindowFunc();
-            }
-            else if (m_newEntityWindow)
-            {
-                NewEntityWindowFunc();
-            }
+            NewEntityWindowFunc();
             ImGui::End();
         }
     });
@@ -90,6 +84,13 @@ void EditorLayer::Init()
         if (m_inEditor && m_editorMode == EditorMode::ENTITY)
         {
             EntityInfoWindowFunc();
+        }
+    });
+    // File browser
+    Oasis::ImGuiWrapper::AddWindowFunction([=](){
+        if (m_showingFileBrowser)
+        {
+            FileBrowserWindowFunc();
         }
     });
 }
@@ -151,7 +152,30 @@ bool EditorLayer::HandleEvent(const Oasis::Event& event)
                     {
                         continue;
                     }
-                    if (auto col = entity->GetComponent<CollisionComponent>())
+                    if (auto render = entity->GetComponent<RenderComponent>())
+                    {
+                        float x = entity->GetX();
+                        float y = entity->GetY();
+                        float w = render->GetWidth();
+                        float h = render->GetHeight();
+                        float mouse_x = static_cast<float>(mouseEvent.GetX()) + Camera::GetX();
+                        float mouse_y = static_cast<float>(Oasis::WindowService::WindowHeight() - mouseEvent.GetY()) + Camera::GetY();
+                        if (mouse_x >= x && mouse_x <= x + w && mouse_y >= y && mouse_y <= y + h)
+                        {
+                            // If the selected entity was already this entity, start moving it
+                            if (m_selectedEntity == entity)
+                            {
+                                m_movingEntity = true;
+                                return true;
+                            }
+                            else
+                            {
+                                m_selectedEntity = entity;
+                                return true;
+                            }
+                        }
+                    }
+                    else if (auto col = entity->GetComponent<CollisionComponent>())
                     {
                         float x = entity->GetX() + col->GetOffsetX();
                         float y = entity->GetY() + col->GetOffsetY();
@@ -271,6 +295,7 @@ void EditorLayer::NewEntityWindowFunc()
         if (ImGui::Button("Change texture"))
         {
             m_showingFileBrowser = true;
+            m_filePathTarget = &m_renderCompPath;
         }
     }
     ImGui::Checkbox("Collision Component", &m_entityCollisionComp);
@@ -326,9 +351,10 @@ void EditorLayer::FileBrowserWindowFunc()
             }
             else
             {
-                m_renderCompPath = str;
+                *m_filePathTarget = str;
                 m_showingFileBrowser = false;
                 m_currentPath = kBaseTextureResourceDirectory;
+                m_filePathTarget = nullptr;
                 break;
             }
         }
@@ -342,6 +368,7 @@ void EditorLayer::FileBrowserWindowFunc()
     {
         m_showingFileBrowser = false;
         m_currentPath = kBaseTextureResourceDirectory;
+        m_filePathTarget = false;
     }
     ImGui::PopStyleColor();
 }

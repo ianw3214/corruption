@@ -19,15 +19,24 @@ void EditorLayer::EntityInfoWindowFunc()
         if (auto render = m_selectedEntity->GetComponent<RenderComponent>())
         {   
             ImGui::Text("texture: %s", render->GetSprite()->GetTexturePath().c_str());
-            float width = render->GetWidth();
-            float height = render->GetHeight();
-            ImGui::SliderFloat("render width", &width, 0.f, 500.f);
-            ImGui::SliderFloat("render height", &height, 0.f, 500.f);
+            ImGui::SliderFloat("render width", &(render->m_width), 0.f, 500.f);
+            ImGui::SliderFloat("render height", &(render->m_height), 0.f, 500.f);
+            static std::string target = "";
             if (ImGui::Button("Change texture"))
             {
-                // TODO: Implement
+                m_showingFileBrowser = true;
+                m_filePathTarget = &target;
             }
-            render->SetDimensions(width, height);
+            // TODO: This is kind of a hacky fix but oh well
+            if (target.size() > 0)
+            {
+                render->m_sprite = new Oasis::Sprite(target);
+                render->m_width = render->m_sprite->GetWidth();
+                render->m_height = render->m_sprite->GetHeight();
+                target = "";
+            }
+            // Update state
+            render->SetDimensions(render->m_width, render->m_height);
         }
         // Collision component
         if (auto collision = m_selectedEntity->GetComponent<CollisionComponent>())

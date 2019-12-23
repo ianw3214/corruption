@@ -63,6 +63,7 @@ private:
     /////////////////////////////////////
     bool m_showingFileBrowser;
     std::string m_currentPath;
+    std::string * m_filePathTarget;
 
     //////////////////////////////////////
     // IMGUi HELPER FUNCTIONS

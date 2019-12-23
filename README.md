@@ -38,7 +38,7 @@
 - [x] Better tile display in editor
 - [x] Better tile palette in editor
 - [x] Display entity info in editor
-- [ ] Display entity components in editor
+- [x] Display entity components in editor
 - [x] Select entities in editor
 - [x] Drag/drop entities in editor
 - [x] Delete entities in editor

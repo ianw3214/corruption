@@ -39,4 +39,6 @@ private:
     // State that's useful for things
     float m_width;
     float m_height;
+
+    friend class EditorLayer;
 };
